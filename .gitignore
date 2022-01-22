@@ -6,7 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
-environments/docker
+environments/docker/
+baselines.egg-info/
+gym_gazebo2.egg-info/
 # Distribution / packaging
 .Python
 build/

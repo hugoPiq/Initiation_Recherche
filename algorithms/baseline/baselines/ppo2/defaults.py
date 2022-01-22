@@ -53,6 +53,33 @@ def mara_mlp():
         # transfer_path = '/tmp/ros2learn/MARA-v0/ppo2_mlp/2019-02-19_12h47min/checkpoints/best',
         trained_path = '/tmp/ros2learn/MARA-v0/ppo2_mlp/2019-04-02_13h18min/checkpoints/best'
     )
+def my_robot_mlp():
+    return dict(
+        num_layers = 2,
+        num_hidden = 16,
+        layer_norm = False,
+        nsteps = 1024,
+        nminibatches = 4, #batchsize = nevn * nsteps // nminibatches
+        lam = 0.95,
+        gamma = 0.99,
+        noptepochs = 10,
+        log_interval = 1,
+        ent_coef = 0.0,
+        lr = lambda f: 3e-3 * f,
+        cliprange = 0.25,
+        vf_coef = 1,
+        max_grad_norm = 0.5,
+        seed = 0,
+        value_network = 'copy',
+        network = 'mlp',
+        total_timesteps = 1e8,
+        save_interval = 10,
+        env_name = 'MYROBOT-v0',
+        transfer_path = None, #?
+        # transfer_path = '/tmp/ros2learn/MARA-v0/ppo2_mlp/2019-02-19_12h47min/checkpoints/best',
+        trained_path = '/tmp/ros2learn/MYROBOT-v0/ppo2_mlp/2019-04-02_13h18min/checkpoints/best'
+    )
+
 
 def mara_lstm():
     return dict(
