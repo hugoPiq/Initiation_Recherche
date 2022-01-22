@@ -1,0 +1,2 @@
+sudo docker rm gg3 || true &&sudo  docker run -it --name=gg3 -v `pwd`:/tmp/ros2learn gg3
+cp -r /root/ros2_mara_ws /tmp/ros2learn

@@ -9,6 +9,7 @@ __pycache__/
 environments/docker/
 baselines.egg-info/
 gym_gazebo2.egg-info/
+docker/ros2_mara_ws/
 # Distribution / packaging
 .Python
 build/

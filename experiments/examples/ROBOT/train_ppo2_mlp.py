@@ -62,7 +62,7 @@ def make_env():
 
 
 # Get dictionary from baselines/ppo2/defaults
-env_type = 'mara_mlp'
+env_type = 'my_robot_mlp'
 alg_kwargs = get_learn_function_defaults('ppo2', env_type)
 
 # Create needed folders
