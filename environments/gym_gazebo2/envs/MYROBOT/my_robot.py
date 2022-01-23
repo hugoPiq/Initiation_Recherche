@@ -90,9 +90,7 @@ class MyRobot(gym.Env):
             Twist, '/cmd_vel')
         self._sub = self.node.create_subscription(
             msg.TFMessage, '/tf', self.observation_callback)
-
-        # self.action_space = spaces.Box(-float('inf'), float('inf'))
-        # self.observation_space = spaces.Box(-float('inf'), float('inf'))
+        self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
         self.action_space = spaces.Box(np.array([-1, -1]), np.array([1, 1]))
         self.observation_space = spaces.Box(
             np.array([-1, -1]), np.array([1, 1]))
