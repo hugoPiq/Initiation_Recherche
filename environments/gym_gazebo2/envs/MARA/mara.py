@@ -369,6 +369,7 @@ class MARAEnv(gym.Env):
         """
         Reset the agent for a particular experiment condition.
         """
+        print("\nreset!")
         self.iterator = 0
 
         if self.reset_jnts is True:
