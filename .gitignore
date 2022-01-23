@@ -10,6 +10,7 @@ environments/docker/
 baselines.egg-info/
 gym_gazebo2.egg-info/
 docker/ros2_mara_ws/
+docker/
 # Distribution / packaging
 .Python
 build/

@@ -91,6 +91,9 @@ class MyRobot(gym.Env):
         self._sub = self.node.create_subscription(
             msg.TFMessage, '/tf', self.observation_callback)
 
+        self.action_space = spaces.Box(-float('inf'), float('inf'))
+        self.observation_space = spaces.Box(-float('inf'), float('inf'))
+
         # spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         # Seed the environment
         self.seed()
