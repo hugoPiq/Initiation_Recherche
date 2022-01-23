@@ -123,14 +123,8 @@ class MyRobot(gym.Env):
                                                        self._observation_msg.rotation.y,
                                                        self._observation_msg.rotation.z,
                                                        self._observation_msg.rotation.w)
-        print("\nRotation: ", rotation)
-        state = np.array([[self._observation_msg.translation.x], [
-                         self._observation_msg.translation.y],
-            [self._observation_msg.translation.z],
-            [self._observation_msg.rotation.x],
-            [self._observation_msg.rotation.y],
-            [self._observation_msg.rotation.z],
-            [self._observation_msg.rotation.w]])
+        state = [self._observation_msg.translation.x,
+                 self._observation_msg.translation.y]
 
         return state
 
