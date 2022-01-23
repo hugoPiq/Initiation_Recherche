@@ -86,7 +86,7 @@ class MyRobot(gym.Env):
         self.targetPosition = Vector3(x=10., y=0., z=0.)
         self.target_orientation = np.asarray(
             [0., 0., 0., 0.])  # orientation of free wheel
-        modelXml = ut_gazebo.getTargetSdf()
+        modelXml = ut_gazebo.getTargetSdfRobot()
         pose = Pose()
         pose.position.x = self.targetPosition.x
         pose.position.y = self.targetPosition.y
