@@ -81,22 +81,48 @@ class MyRobot(gym.Env):
         #############################
         # Target, where should the agent reach
 
+        """ TARGET"""
+        spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = Vector3(x=10., y=0., z=0.)
         self.target_orientation = np.asarray(
             [0., 0., 0., 0.])  # orientation of free wheel
+        modelXml = ut_gazebo.getTargetSdf()
+        pose = Pose()
+        pose.position.x = self.targetPosition[0]
+        pose.position.y = self.targetPosition[1]
+        pose.position.z = self.targetPosition[2]
+        pose.orientation.x = self.target_orientation[1]
+        pose.orientation.y = self.target_orientation[2]
+        pose.orientation.z = self.target_orientation[3]
+        pose.orientation.w = self.target_orientation[0]
 
+        # override previous spawn_request element.
+        self.spawn_request = SpawnEntity.Request()
+        self.spawn_request.name = "target"
+        self.spawn_request.xml = modelXml
+        self.spawn_request.robot_namespace = ""
+        self.spawn_request.initial_pose = pose
+        self.spawn_request.reference_frame = "world"
+
+        # #ROS2 Spawn Entity
+        target_future = spawn_cli.call_async(self.spawn_request)
+        rclpy.spin_until_future_complete(self.node, target_future)
+
+        """ TOPICS """
         # Subscribe to the appropriate topics, taking into account the particular robot
         self._pub = self.node.create_publisher(
             Twist, '/cmd_vel')
         self._sub = self.node.create_subscription(
             msg.TFMessage, '/tf', self.observation_callback)
+
+        # For reset purpose
         self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
+
+        """ ENV GYM"""
         self.action_space = spaces.Box(np.array([-1, -1]), np.array([1, 1]))
         self.observation_space = spaces.Box(
             np.array([-1, -1]), np.array([1, 1]))
 
-        # spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
-        # Seed the environment
         self.seed()
 
     def observation_callback(self, message):

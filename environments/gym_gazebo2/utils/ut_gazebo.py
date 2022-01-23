@@ -1,6 +1,7 @@
 from gazebo_msgs.srv import SpawnEntity
 import rclpy
 
+
 def spawnModel(node, objName, objPath, pose):
     objFile = open(objPath, mode='r')
     xml = objFile.read()
@@ -21,6 +22,7 @@ def spawnModel(node, objName, objPath, pose):
 
     future = addEntity.call_async(req)
     rclpy.spin_until_future_complete(node, future)
+
 
 def getTargetSdf():
     modelXml = """<?xml version='1.0'?>
