@@ -51,7 +51,7 @@ def getTargetSdf():
                             <pose frame=''>0 0 0 0 0 0</pose>
                             <geometry>
                               <sphere>
-                                <radius>0.01</radius>
+                                <radius>0.1</radius>
                               </sphere>
                             </geometry>
                             <material>
