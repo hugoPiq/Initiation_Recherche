@@ -144,8 +144,9 @@ class MyRobot(gym.Env):
 
         # Execute "action"
         # Control only x and yaw
+        print('\n', float(action[0]))
         self._pub.publish(Twist(linear=Vector3(
-            x=action[0], y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=action[1])))
+            x=float(action[0]), y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=float(action[1]))))
         # Take an observation
         obs = self.take_observation()
 
