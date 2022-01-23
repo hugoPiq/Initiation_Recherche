@@ -273,8 +273,6 @@ class MARAEnv(gym.Env):
                                                                # use the base_robot coordinate system
                                                                baseLink=self.environment['linkNames'][0],
                                                                endLink=self.environment['linkNames'][-1])
-            print("\ntranslation: ", translation)
-            print("\nrot: ", translation)
             current_eePos_tgt = np.ndarray.flatten(general_utils.getEePoints(
                 self.environment['end_effector_points'], translation, rot).T)
             eePos_points = current_eePos_tgt - self.targetPosition
@@ -289,7 +287,6 @@ class MARAEnv(gym.Env):
                           np.reshape(eeVelocities, -1),
                           np.reshape(current_eePos_tgt, -1),
                           np.reshape(rot.reshape(1, 9), -1)]
-            print("\nstate: ", state)
             return state
 
     def collision(self):
