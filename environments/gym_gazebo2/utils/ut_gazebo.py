@@ -99,7 +99,7 @@ def getTargetSdfRobot():
                             <pose frame=''>0 0 0 0 0 0</pose>
                             <geometry>
                               <sphere>
-                                <radius>10.0</radius>
+                                <radius>0.1</radius>
                               </sphere>
                             </geometry>
                             <material>
