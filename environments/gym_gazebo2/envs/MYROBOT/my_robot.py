@@ -119,11 +119,10 @@ class MyRobot(gym.Env):
         rclpy.spin_once(self.node)
         # Robot State
         # print("\n matrix", general_utils.quaternion_to_matrix(quaternion))
-        rotation = general_utils.rotationFromMatrix(
-            general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
-                                                self._observation_msg.rotation.y,
-                                                self._observation_msg.rotation.z,
-                                                self._observation_msg.rotation.w))
+        rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
+                                                       self._observation_msg.rotation.y,
+                                                       self._observation_msg.rotation.z,
+                                                       self._observation_msg.rotation.w)
         print("\nRotation: ", rotation)
         state = np.array([[self._observation_msg.translation.x], [
                          self._observation_msg.translation.y],
