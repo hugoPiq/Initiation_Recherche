@@ -129,6 +129,7 @@ class MyRobot(gym.Env):
             [self._observation_msg.rotation.y],
             [self._observation_msg.rotation.z],
             [self._observation_msg.rotation.w]])
+
         return state
 
     def seed(self, seed=None):
