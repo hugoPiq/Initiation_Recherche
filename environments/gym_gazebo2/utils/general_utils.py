@@ -7,11 +7,13 @@ import numpy as np
 # sys.path.append('/home/rkojcev/ros_python3/devel/lib')
 import PyKDL as kdl
 
+
 class BundleType():
     """
     This class bundles many fields, similar to a record or a mutable
     namedtuple.
     """
+
     def __init__(self, variables):
         for var, val in variables.items():
             object.__setattr__(self, var, val)
@@ -192,13 +194,17 @@ def rotationFromMatrix(matrix):
     # rotation angle depending on direction
     cosa = (np.trace(r33) - 1.0) / 2.0
     if abs(direction[2]) > 1e-8:
-        sina = (rot[1, 0] + (cosa-1.0)*direction[0]*direction[1]) / direction[2]
+        sina = (rot[1, 0] + (cosa-1.0)*direction[0]
+                * direction[1]) / direction[2]
     elif abs(direction[1]) > 1e-8:
-        sina = (rot[0, 2] + (cosa-1.0)*direction[0]*direction[2]) / direction[1]
+        sina = (rot[0, 2] + (cosa-1.0)*direction[0]
+                * direction[2]) / direction[1]
     else:
-        sina = (rot[2, 1] + (cosa-1.0)*direction[1]*direction[2]) / direction[0]
+        sina = (rot[2, 1] + (cosa-1.0)*direction[1]
+                * direction[2]) / direction[0]
     angle = math.atan2(sina, cosa)
     return angle, direction, point
+
 
 def quaternionFromMatrix(matrix, isprecise=False):
     """Return quaternion from rotation matrix.
@@ -289,6 +295,7 @@ def quaternionFromMatrix(matrix, isprecise=False):
     qNew[3] = q00[0]
     return qNew
 
+
 def jointListToKdl(q00):
     """ Return KDL JntArray converted from list q00 """
     if q00 is None:
@@ -299,6 +306,7 @@ def jointListToKdl(q00):
     for i, qi0 in enumerate(q00):
         qKdl[i] = qi0
     return qKdl
+
 
 def jointKdlToList(q00):
     """ Return list converted from KDL JntArray"""
@@ -331,6 +339,7 @@ def forwardKinematics(robotChain, linkNames, q00, baseLink='base', endLink='ee_l
     rot = pose[:3, :3]
     return pos, rot
 
+
 def doKdlFk(robotChain, q00, linkNumber):
     endeffecFrame = kdl.Frame()
     fkKdl = kdl.ChainFkSolverPos_recursive(robotChain)
@@ -346,7 +355,6 @@ def doKdlFk(robotChain, q00, linkNumber):
                          [0, 0, 0, 1]])
     else:
         return None
-
 
 
 def inverseKinematics(robotChain, pos, rot, qGuess=None, minJoints=None, maxJoints=None):
@@ -391,3 +399,44 @@ def inverseKinematics(robotChain, pos, rot, qGuess=None, minJoints=None, maxJoin
         return jointKdlToList(qKdl)
     else:
         return None
+
+
+def quaternion_to_matrix(Q):
+    """
+    Covert a quaternion into a full three-dimensional rotation matrix.
+
+    Input
+    :param Q: A 4 element array representing the quaternion (q0,q1,q2,q3) 
+
+    Output
+    :return: A 3x3 element matrix representing the full 3D rotation matrix. 
+             This rotation matrix converts a point in the local reference 
+             frame to a point in the global reference frame.
+    """
+    # Extract the values from Q
+    q0 = Q[0]
+    q1 = Q[1]
+    q2 = Q[2]
+    q3 = Q[3]
+
+    # First row of the rotation matrix
+    r00 = 2 * (q0 * q0 + q1 * q1) - 1
+    r01 = 2 * (q1 * q2 - q0 * q3)
+    r02 = 2 * (q1 * q3 + q0 * q2)
+
+    # Second row of the rotation matrix
+    r10 = 2 * (q1 * q2 + q0 * q3)
+    r11 = 2 * (q0 * q0 + q2 * q2) - 1
+    r12 = 2 * (q2 * q3 - q0 * q1)
+
+    # Third row of the rotation matrix
+    r20 = 2 * (q1 * q3 - q0 * q2)
+    r21 = 2 * (q2 * q3 + q0 * q1)
+    r22 = 2 * (q0 * q0 + q3 * q3) - 1
+
+    # 3x3 rotation matrix
+    rot_matrix = np.array([[r00, r01, r02],
+                           [r10, r11, r12],
+                           [r20, r21, r22]])
+
+    return rot_matrix

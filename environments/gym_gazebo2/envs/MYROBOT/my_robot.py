@@ -118,10 +118,14 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        # state = np.r_[np.reshape(lastObservations, -1),
-        #               np.reshape(eePos_points, -1),
-        #               # np.reshape(quat_error, -1),
-        #               np.reshape(eeVelocities, -1), ]
+        quaternion = [self._observation_msg.rotation.x,
+                      self._observation_msg.rotation.y,
+                      self._observation_msg.rotation.z,
+                      self._observation_msg.rotation.w]
+
+        rotation = general_utils.rotationFromMatrix(
+            general_utils.quaternion_to_matrix(quaternion))
+        print("\nRotation: ", rotation)
         state = np.array([[self._observation_msg.translation.x], [
                          self._observation_msg.translation.y],
             [self._observation_msg.translation.z],
@@ -148,7 +152,7 @@ class MyRobot(gym.Env):
 
         # Execute "action"
         self._pub.publish(Twist(linear=Vector3(
-            x=1.0, y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=0.0)))
+            x=1.0, y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=0.5)))
         # Take an observation
         obs = self.take_observation()
 
