@@ -140,12 +140,12 @@ class MyRobot(gym.Env):
             - reward
             - done (status)
         """
-        print(action)
         self.iterator += 1
 
         # Execute "action"
+        # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
-            x=1.0, y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=0.5)))
+            x=action[0], y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=action[1])))
         # Take an observation
         obs = self.take_observation()
 
