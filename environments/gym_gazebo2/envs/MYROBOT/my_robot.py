@@ -144,7 +144,6 @@ class MyRobot(gym.Env):
 
         # Execute "action"
         # Control only x and yaw
-        print('\n', float(action[0]))
         self._pub.publish(Twist(linear=Vector3(
             x=float(action[0]), y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=float(action[1]))))
         # Take an observation
@@ -153,10 +152,8 @@ class MyRobot(gym.Env):
         # Compute reward
         distance = ut_math.computeDistance(
             self._observation_msg, self.targetPosition)
-        print("\ndistance:", distance)
 
         reward = ut_math.computeRewardDistance(distance)
-        print("\nreward:", reward)
 
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
