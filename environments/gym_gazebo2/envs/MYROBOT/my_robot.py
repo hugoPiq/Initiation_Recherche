@@ -140,6 +140,7 @@ class MyRobot(gym.Env):
             - reward
             - done (status)
         """
+        print(action)
         self.iterator += 1
 
         # Execute "action"
