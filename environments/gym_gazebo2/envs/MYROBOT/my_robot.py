@@ -93,8 +93,9 @@ class MyRobot(gym.Env):
 
         # self.action_space = spaces.Box(-float('inf'), float('inf'))
         # self.observation_space = spaces.Box(-float('inf'), float('inf'))
-        self.action_space = spaces.Box(-1, 1)
-        self.observation_space = spaces.Box(-1, 1)
+        self.action_space = spaces.Box(np.array([-1, -1]), np.array([1, 1]))
+        self.observation_space = spaces.Box(
+            np.array([-1, -1]), np.array([1, 1]))
 
         # spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         # Seed the environment
