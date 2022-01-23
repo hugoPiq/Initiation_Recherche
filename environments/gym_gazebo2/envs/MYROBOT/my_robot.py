@@ -122,8 +122,13 @@ class MyRobot(gym.Env):
         #               np.reshape(eePos_points, -1),
         #               # np.reshape(quat_error, -1),
         #               np.reshape(eeVelocities, -1), ]
-        state = [self._observation_msg.translation,
-                 self._observation_msg.rotation]
+        state = np.array([[self._observation_msg.translation.x], [
+                         self._observation_msg.translation.y],
+            [self._observation_msg.translation.z],
+            [self._observation_msg.rotation.x],
+            [self._observation_msg.rotation.y],
+            [self._observation_msg.rotation.z],
+            [self._observation_msg.rotation.w]])
         return state
 
     def seed(self, seed=None):
