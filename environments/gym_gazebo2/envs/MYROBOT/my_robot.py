@@ -164,11 +164,21 @@ class MyRobot(gym.Env):
         """
         Reset the agent for a particular experiment condition.
         """
+        print("\nreset!")
         self.iterator = 0
+
+        if self.reset_jnts is True:
+            # reset simulation
+            while not self.reset_sim.wait_for_service(timeout_sec=1.0):
+                self.node.get_logger().info('/reset_simulation service not available, waiting again...')
+
+            reset_future = self.reset_sim.call_async(Empty.Request())
+            rclpy.spin_until_future_complete(self.node, reset_future)
+
+        self.ros_clock = rclpy.clock.Clock().now().nanoseconds
 
         # Take an observation
         obs = self.take_observation()
-
         # Return the corresponding observation
         return obs
 
