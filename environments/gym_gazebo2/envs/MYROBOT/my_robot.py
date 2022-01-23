@@ -90,7 +90,7 @@ class MyRobot(gym.Env):
         pose = Pose()
         pose.position.x = self.targetPosition.x
         pose.position.y = self.targetPosition.y
-        pose.position.z = self.targetPosition.z
+        pose.position.z = self.targetPosition.z + 0.5
         pose.orientation.x = self.target_orientation[1]
         pose.orientation.y = self.target_orientation[2]
         pose.orientation.z = self.target_orientation[3]
