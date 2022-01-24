@@ -1,3 +1,4 @@
+from turtle import done
 import numpy as np
 from baselines.common.runners import AbstractEnvRunner
 
@@ -32,11 +33,10 @@ class Runner(AbstractEnvRunner):
             mb_values.append(values)
             mb_neglogpacs.append(neglogpacs)
             mb_dones.append(self.dones)
-            print("\nok")
             # Take actions in env and look the results
-            # Infos contains a ton of useful informations
+            # Infos contains a ton of useful informations and reset
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
-            print("\n",infos)
+            print(self.dones)
             for info in infos:
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
