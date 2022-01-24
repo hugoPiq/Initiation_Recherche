@@ -12,7 +12,7 @@ def rmseFunc(eePoints):
 
 
 def computeReward(rewardDist, rewardOrientation=0, collision=False):
-    alpha = 5
+    alpha = 10
     beta = 1.5
     gamma = 1
     delta = 3
@@ -39,7 +39,7 @@ def computeDistance(vect1, vect2):
 
 
 def computeRewardDistance(rewardDist):
-    alpha = 10
+    alpha = 5
     done = 0.02
 
     distanceReward = (math.exp(-alpha * rewardDist) - math.exp(-alpha)) \
