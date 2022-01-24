@@ -175,7 +175,7 @@ class MyRobot(gym.Env):
             - done (status)
         """
         self.iterator += 1
-
+        print("action:", action)
         # Execute "action"
         # Control only x and yaw
         # self._pub.publish(Twist(linear=Vector3(
