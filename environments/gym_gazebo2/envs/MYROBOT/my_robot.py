@@ -72,7 +72,7 @@ class MyRobot(gym.Env):
 
         # class variables
         self._observation_msg = None
-        self.max_episode_steps = 2048  # default value, can be updated from baselines
+        self.max_episode_steps = 1024  # default value, can be updated from baselines
         self.iterator = 0
         self.reset_jnts = True
 
@@ -80,7 +80,19 @@ class MyRobot(gym.Env):
         #   Environment hyperparams
         #############################
         # Target, where should the agent reach
+        """ ENV GYM"""
+        # self.action_space = spaces.Box(
+        #     np.array([0, 0]), np.array([1, 1]))
+        self.action_space = spaces.Box(
+            np.array([-np.pi, 0]).astype(np.float32),
+            np.array([np.pi, 1]).astype(np.float32))
+        # self.observation_space = spaces.Box(
+        #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
+        self.observation_space = spaces.Box(
+            np.array([-np.pi, -np.float('inf'), -np.float('inf')]
+                     ).astype(np.float32),
+            np.array([np.pi, np.float('inf'), np.float('inf')]).astype(np.float32))
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
@@ -119,16 +131,6 @@ class MyRobot(gym.Env):
         # For reset purpose
         self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
-        """ ENV GYM"""
-        # self.action_space = spaces.Box(
-        #     np.array([0, 0]), np.array([1, 1]))
-        self.action_space = spaces.Box(
-            np.array([0]), np.array([0]))
-        # self.observation_space = spaces.Box(
-        #     np.array([0, -np.pi]), np.array([10, np.pi]))
-
-        self.observation_space = spaces.Box(
-            np.array([-10]), np.array([10]))
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
@@ -151,15 +153,15 @@ class MyRobot(gym.Env):
         rclpy.spin_once(self.node)
         # Robot State
         # print("\n matrix", general_utils.quaternion_to_matrix(quaternion))
-        # rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
-        #                                                self._observation_msg.rotation.y,
-        #                                                self._observation_msg.rotation.z,
-        #                                                self._observation_msg.rotation.w)
+        rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
+                                                       self._observation_msg.rotation.y,
+                                                       self._observation_msg.rotation.z,
+                                                       self._observation_msg.rotation.w)
         current_position = np.array([self._observation_msg.translation.x,
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = current_position - self.targetPosition
-        state = np.r_[np.reshape(diff_position[0:1], -1)]
+        state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         return state
 
     def seed(self, seed=None):
@@ -178,10 +180,10 @@ class MyRobot(gym.Env):
         print("action:", action)
         # Execute "action"
         # Control only x and yaw
-        # self._pub.publish(Twist(linear=Vector3(
-        #     x=float(action[0]), y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=float(action[1]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[0]))))
+            x=float(action[1]), y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=float(action[0]))))
+        # self._pub.publish(Twist(linear=Vector3(
+        #     x=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
         # print("dif:", obs)
