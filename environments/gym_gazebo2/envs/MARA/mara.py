@@ -267,12 +267,6 @@ class MARAEnv(gym.Env):
             print("End link is empty!!")
             return None
         else:
-            print("\n", self.mara_chain,
-                  self.environment['linkNames'],
-                  lastObservations[:self.numJoints],
-                  # use the base_robot coordinate system
-                  self.environment['linkNames'][0],
-                  self.environment['linkNames'][-1])
             translation, rot = general_utils.forwardKinematics(self.mara_chain,
                                                                self.environment['linkNames'],
                                                                lastObservations[:self.numJoints],

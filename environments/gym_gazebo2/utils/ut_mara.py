@@ -1,6 +1,7 @@
 import numpy as np
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from PyKDL import Jacobian, JntArray # For KDL Jacobians
+from PyKDL import Jacobian, JntArray  # For KDL Jacobians
+
 
 def processObservations(message, agent):
     """
@@ -19,7 +20,9 @@ def processObservations(message, agent):
             if len(message.joint_names) != len(agent['jointOrder']):
                 raise Exception
 
-        return np.array(message.actual.positions) # + message.actual.velocities
+        # + message.actual.velocities
+        return np.array(message.actual.positions)
+
 
 def getJacobians(state, numberOfJoints, jacSolver):
     """
@@ -39,11 +42,12 @@ def getJacobians(state, numberOfJoints, jacSolver):
     # Update the jacobian by solving for the given angles.observation_callback
     jacSolver.JntToJac(angles, jacobian)
     # Initialize a numpy array to store the Jacobian.
-    jac = np.array([[jacobian[i, j] for j in range(jacobian.columns())] \
-        for i in range(jacobian.rows())])
+    jac = np.array([[jacobian[i, j] for j in range(jacobian.columns())]
+                    for i in range(jacobian.rows())])
     # Only want the cartesian position, not Roll, Pitch, Yaw (RPY) Angles
     eeJacobians = jac
     return eeJacobians
+
 
 def getEePointsJacobians(refJacobian, eePoints, refRot, numberOfJoints):
     """
@@ -59,10 +63,11 @@ def getEePointsJacobians(refJacobian, eePoints, refRot, numberOfJoints):
     refJacobiansRot = refJacobian[3:, :]
     endEffectorPointsRot = np.expand_dims(refRot.dot(eePoints.T).T, axis=1)
     eePointsJacTrans = np.tile(refJacobiansTrans, (eePoints.shape[0], 1)) + \
-                                np.cross(refJacobiansRot.T, endEffectorPointsRot).transpose(
-                                    (0, 2, 1)).reshape(-1, numberOfJoints)
+        np.cross(refJacobiansRot.T, endEffectorPointsRot).transpose(
+        (0, 2, 1)).reshape(-1, numberOfJoints)
     eePointsJacRot = np.tile(refJacobiansRot, (eePoints.shape[0], 1))
     return eePointsJacTrans, eePointsJacRot
+
 
 def getEePointsVelocities(refJacobian, eePoints, refRot, jointVelocities):
     """
@@ -80,6 +85,7 @@ def getEePointsVelocities(refJacobian, eePoints, refRot, jointVelocities):
     eeVelocities = eeVelocitiesTrans + np.cross(eeVelocitiesRot.reshape(1, 3),
                                                 refRot.dot(eePoints.T).T)
     return eeVelocities.reshape(-1)
+
 
 def getTrajectoryMessage(action, jointOrder, velocity):
     """
@@ -101,13 +107,14 @@ def getTrajectoryMessage(action, jointOrder, velocity):
     actionMsg.points = [target]
     return actionMsg
 
+
 def positionsMatch(action, lastObservation):
     """
     Compares a given action with the observed position.
     Returns: bool. True if the position is final, False if not.
     """
     acceptedError = 0.01
-    for i in range(action.size -1): #lastObservation loses last pose
+    for i in range(action.size - 1):  # lastObservation loses last pose
         if abs(action[i] - lastObservation[i]) > acceptedError:
             return False
     return True

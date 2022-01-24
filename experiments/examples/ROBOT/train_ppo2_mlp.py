@@ -11,7 +11,7 @@ from importlib import import_module
 from baselines import bench, logger
 from baselines.ppo2 import ppo2
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
-
+from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
 ncpu = multiprocessing.cpu_count()
 
 if sys.platform == 'darwin':
@@ -97,7 +97,8 @@ with open(logger.get_dir() + "/parameters.txt", 'w') as out:
         + 'env_name = ' + alg_kwargs['env_name'] + '\n'
         + 'transfer_path = ' + str(alg_kwargs['transfer_path']))
 
-env = DummyVecEnv([make_env])
+# env = DummyVecEnv([make_env])
+env = SubprocVecEnv([make_env])
 
 learn = get_learn_function('ppo2')
 transfer_path = alg_kwargs['transfer_path']
