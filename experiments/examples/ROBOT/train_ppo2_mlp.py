@@ -97,8 +97,8 @@ with open(logger.get_dir() + "/parameters.txt", 'w') as out:
         + 'env_name = ' + alg_kwargs['env_name'] + '\n'
         + 'transfer_path = ' + str(alg_kwargs['transfer_path']))
 
-# env = DummyVecEnv([make_env])
-env = SubprocVecEnv([make_env])
+env = DummyVecEnv([make_env])
+# env = SubprocVecEnv([make_env])
 
 learn = get_learn_function('ppo2')
 transfer_path = alg_kwargs['transfer_path']
