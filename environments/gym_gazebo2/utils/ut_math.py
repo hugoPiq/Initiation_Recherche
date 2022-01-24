@@ -35,7 +35,7 @@ def computeReward(rewardDist, rewardOrientation=0, collision=False):
 
 
 def computeDistance(vect1, vect2):
-    return np.sqrt((vect1.translation.x - vect2.x)**2+(vect1.translation.y - vect2.y)**2)
+    return np.sqrt(1/2*((vect1.translation.x - vect2.x)**2+(vect1.translation.y - vect2.y)**2))
 
 
 def computeRewardDistance(rewardDist):
@@ -45,4 +45,4 @@ def computeRewardDistance(rewardDist):
     distanceReward = (math.exp(-alpha * rewardDist) - math.exp(-alpha)) \
         / (1 - math.exp(-alpha)) + 10 * (math.exp(-alpha/done * rewardDist) - math.exp(-alpha/done)) \
         / (1 - math.exp(-alpha/done))
-    return distanceReward - 1
+    return distanceReward
