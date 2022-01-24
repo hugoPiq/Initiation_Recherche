@@ -175,16 +175,14 @@ class MyRobot(gym.Env):
         # print("action:", action)
         # Execute "action"
         # Control only x and yaw
-        # self._pub.publish(Twist(linear=Vector3(
-        #     x=float(action[1])), angular=Vector3(z=float(action[0]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(1)), angular=Vector3(z=float(0.1))))
+            x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs)
         # print(rewardDist, " ")
-        reward = ut_math.computeReward(rewardDist) + 1
+        reward = ut_math.computeReward(rewardDist)
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
         # self.buffer_dist_rewards.append(rewardDist)
