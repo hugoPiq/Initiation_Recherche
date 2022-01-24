@@ -58,10 +58,8 @@ class MyRobot(gym.Env):
 
         # Set the path of the corresponding URDF file
         # xacro my_robot.urdf.xacro > my_robot.urdf
-        # urdfPath = get_prefix_path(
-        #     "my_robot_description") + "/share/my_robot_description/urdf/my_robot.urdf"
         urdfPath = get_prefix_path(
-            "my_robot_description") + "/share/my_robot_description/urdf/frangipane.urdf"
+            "my_robot_description") + "/share/my_robot_description/urdf/my_robot.urdf"
 
         # Launch robot in a new Process
         self.launch_subp = ut_launch.startLaunchServiceProcess(
@@ -87,9 +85,9 @@ class MyRobot(gym.Env):
             np.array([-np.pi, -10]).astype(np.float32),
             np.array([np.pi, 10]).astype(np.float32))
         self.observation_space = spaces.Box(
-            np.array([0, -np.float('inf')]
+            np.array([0, -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
-            np.array([2*np.pi, np.float('inf')]).astype(np.float32))
+            np.array([2*np.pi, np.float('inf'), np.float('inf')]).astype(np.float32))
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
@@ -158,7 +156,7 @@ class MyRobot(gym.Env):
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = current_position - self.targetPosition
-        state = np.r_[rotation[2], np.reshape(diff_position[0:1], -1)]
+        state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
 
@@ -183,7 +181,7 @@ class MyRobot(gym.Env):
         # Take an observation
         obs = self.take_observation()
         # Compute reward
-        rewardDist = ut_math.rmseFunc(obs)
+        rewardDist = ut_math.rmseFunc(obs[1:3])
         # print(rewardDist, " ")
         reward = ut_math.computeReward(rewardDist)
         # Calculate if the env has been solved
