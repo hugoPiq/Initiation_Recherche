@@ -178,7 +178,7 @@ class MyRobot(gym.Env):
         distance = ut_math.computeDistance(
             self._observation_msg, self.targetPosition)
         # print("\ndistance:", distance)
-        reward = ut_math.computeRewardDistance(distance)
+        reward = ut_math.computeReward(distance)
         # print(reward, "__")
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
