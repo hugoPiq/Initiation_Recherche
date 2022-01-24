@@ -271,8 +271,8 @@ class MARAEnv(gym.Env):
                   self.environment['linkNames'],
                   lastObservations[:self.numJoints],
                   # use the base_robot coordinate system
-                  baseLink=self.environment['linkNames'][0],
-                  endLink=self.environment['linkNames'][-1])
+                  self.environment['linkNames'][0],
+                  self.environment['linkNames'][-1])
             translation, rot = general_utils.forwardKinematics(self.mara_chain,
                                                                self.environment['linkNames'],
                                                                lastObservations[:self.numJoints],
