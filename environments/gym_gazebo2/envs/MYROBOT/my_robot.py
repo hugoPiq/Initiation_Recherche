@@ -126,6 +126,8 @@ class MyRobot(gym.Env):
             np.array([0, -np.pi]), np.array([10, np.pi]))
 
         self.seed()
+        self.buffer_dist_rewards = []
+        self.buffer_tot_rewards = []
 
     def observation_callback(self, message):
         """
