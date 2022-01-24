@@ -12,7 +12,7 @@ def rmseFunc(eePoints):
 
 
 def computeReward(rewardDist, rewardOrientation=0, collision=False):
-    alpha = 10
+    alpha = 5
     beta = 1.5
     gamma = 1
     delta = 3
