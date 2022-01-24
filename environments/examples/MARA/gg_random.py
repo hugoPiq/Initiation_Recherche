@@ -5,7 +5,8 @@ for an explanation of this script"""
 import gym
 import gym_gazebo2
 import time
-env = gym.make('MARA-v0')
+# env = gym.make('MARA-v0')
+env = gym.make('MARACamera-v0')
 
 #env = gym.make('MARAOrient-v0')
 #env = gym.make('MARACollision-v0')
