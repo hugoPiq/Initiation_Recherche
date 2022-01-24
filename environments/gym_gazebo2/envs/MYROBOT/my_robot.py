@@ -81,20 +81,13 @@ class MyRobot(gym.Env):
         #############################
         # Target, where should the agent reach
         """ ENV GYM"""
-        # self.action_space = spaces.Box(
-        #     np.array([-np.pi, 0]).astype(np.float32),
-        #     np.array([np.pi, 10]).astype(np.float32))
-        # self.observation_space = spaces.Box(
-        #     np.array([0, -np.float('inf')]
-        #              ).astype(np.float32),
-        #     np.array([2*np.pi, np.float('inf')]).astype(np.float32))
         self.action_space = spaces.Box(
-            np.array([-10, -10]).astype(np.float32),
-            np.array([10, 10]).astype(np.float32))
+            np.array([-np.pi, -10]).astype(np.float32),
+            np.array([np.pi, 10]).astype(np.float32))
         self.observation_space = spaces.Box(
-            np.array([-np.float('inf'), -np.float('inf')]
+            np.array([0, -np.float('inf')]
                      ).astype(np.float32),
-            np.array([np.float('inf'), np.float('inf')]).astype(np.float32))
+            np.array([2*np.pi, np.float('inf')]).astype(np.float32))
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
@@ -163,8 +156,8 @@ class MyRobot(gym.Env):
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = current_position - self.targetPosition
-        # state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
-        state = np.r_[np.reshape(diff_position[0:2], -1)]
+        state = np.r_[rotation[2], np.reshape(diff_position[0:1], -1)]
+        # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
 
     def seed(self, seed=None):
@@ -183,10 +176,8 @@ class MyRobot(gym.Env):
         # print("action:", action)
         # Execute "action"
         # Control only x and yaw
-        # self._pub.publish(Twist(linear=Vector3(
-        #     x=float(action[1])), angular=Vector3(z=float(action[0]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[0]), y=float(action[1]))))
+            x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
         # Compute reward
