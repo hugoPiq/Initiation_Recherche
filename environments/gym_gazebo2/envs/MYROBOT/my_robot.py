@@ -121,7 +121,7 @@ class MyRobot(gym.Env):
         """ ENV GYM"""
         self.action_space = spaces.Box(np.array([0, -1]), np.array([1, 1]))
         self.observation_space = spaces.Box(
-            np.array([-1, -1]), np.array([0, 1]))
+            np.array([0, 0]), np.array([10, 2*np.pi]))
 
         self.seed()
 
