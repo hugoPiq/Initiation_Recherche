@@ -22,7 +22,6 @@ class Runner(AbstractEnvRunner):
         mb_obs, mb_rewards, mb_actions, mb_values, mb_dones, mb_neglogpacs = [],[],[],[],[],[]
         mb_states = self.states
         epinfos = []
-        print("I will reset!")
         # For n in range number of steps
         for _ in range(self.nsteps):
             # Given observations, get action value and neglopacs
@@ -41,6 +40,7 @@ class Runner(AbstractEnvRunner):
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
             mb_rewards.append(rewards)
+        print("I will reset!")
         #batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
         mb_rewards = np.asarray(mb_rewards, dtype=np.float32)
