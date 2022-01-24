@@ -81,13 +81,9 @@ class MyRobot(gym.Env):
         #############################
         # Target, where should the agent reach
         """ ENV GYM"""
-        # self.action_space = spaces.Box(
-        #     np.array([0, 0]), np.array([1, 1]))
         self.action_space = spaces.Box(
             np.array([-np.pi, 0]).astype(np.float32),
             np.array([np.pi, 1]).astype(np.float32))
-        print(self.action_space.high)
-        print(self.action_space.low)
         self.observation_space = spaces.Box(
             np.array([-np.pi, -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
@@ -176,46 +172,41 @@ class MyRobot(gym.Env):
             - done (status)
         """
         self.iterator += 1
-        print("action:", action)
+        # print("action:", action)
         # Execute "action"
         # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[1]), y=0.0, z=0.0), angular=Vector3(x=0.0, y=0.0, z=float(action[0]))))
-        # self._pub.publish(Twist(linear=Vector3(
-        #     x=float(action[0]))))
+            x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
-        # print("dif:", obs)
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs)
         # print(rewardDist, " ")
         reward = ut_math.computeReward(rewardDist)
-        # print(reward, " ")
-        # print(reward, "__")
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
-        self.buffer_dist_rewards.append(rewardDist)
-        self.buffer_tot_rewards.append(reward)
+        # self.buffer_dist_rewards.append(rewardDist)
+        # self.buffer_tot_rewards.append(reward)
         info = {}
-        if self.iterator % self.max_episode_steps == 0:
+        # if self.iterator % self.max_episode_steps == 0:
 
-            max_dist_tgt = max(self.buffer_dist_rewards)
-            mean_dist_tgt = np.mean(self.buffer_dist_rewards)
-            std_dist_tgt = np.std(self.buffer_dist_rewards)
-            min_dist_tgt = min(self.buffer_dist_rewards)
-            skew_dist_tgt = skew(self.buffer_dist_rewards)
+        #     max_dist_tgt = max(self.buffer_dist_rewards)
+        #     mean_dist_tgt = np.mean(self.buffer_dist_rewards)
+        #     std_dist_tgt = np.std(self.buffer_dist_rewards)
+        #     min_dist_tgt = min(self.buffer_dist_rewards)
+        #     skew_dist_tgt = skew(self.buffer_dist_rewards)
 
-            max_tot_rew = max(self.buffer_tot_rewards)
-            mean_tot_rew = np.mean(self.buffer_tot_rewards)
-            std_tot_rew = np.std(self.buffer_tot_rewards)
-            min_tot_rew = min(self.buffer_tot_rewards)
-            skew_tot_rew = skew(self.buffer_tot_rewards)
+        #     max_tot_rew = max(self.buffer_tot_rewards)
+        #     mean_tot_rew = np.mean(self.buffer_tot_rewards)
+        #     std_tot_rew = np.std(self.buffer_tot_rewards)
+        #     min_tot_rew = min(self.buffer_tot_rewards)
+        #     skew_tot_rew = skew(self.buffer_tot_rewards)
 
-            info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
-                              "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
-                              "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew, "ep_rew_skew": skew_tot_rew}}
-            self.buffer_dist_rewards = []
-            self.buffer_tot_rewards = []
+        #     info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
+        #                       "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
+        #                       "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew, "ep_rew_skew": skew_tot_rew}}
+        #     self.buffer_dist_rewards = []
+        #     self.buffer_tot_rewards = []
         # Return the corresponding observations, rewards, etc.
         return obs, reward, done, info
 
@@ -223,7 +214,6 @@ class MyRobot(gym.Env):
         """
         Reset the agent for a particular experiment condition.
         """
-        print("\nReset!")
         self.iterator = 0
 
         if self.reset_jnts is True:
