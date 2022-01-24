@@ -32,7 +32,7 @@ class Runner(AbstractEnvRunner):
             mb_values.append(values)
             mb_neglogpacs.append(neglogpacs)
             mb_dones.append(self.dones)
-
+            print("\nok")
             # Take actions in env and look the results
             # Infos contains a ton of useful informations
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
