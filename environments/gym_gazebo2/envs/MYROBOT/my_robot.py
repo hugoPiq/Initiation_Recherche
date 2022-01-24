@@ -123,12 +123,12 @@ class MyRobot(gym.Env):
         # self.action_space = spaces.Box(
         #     np.array([0, 0]), np.array([1, 1]))
         self.action_space = spaces.Box(
-            np.array([-1]), np.array([0]))
+            np.array([0]), np.array([1]))
         # self.observation_space = spaces.Box(
         #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
         self.observation_space = spaces.Box(
-            np.array([-1]), np.array([0]))
+            np.array([0]), np.array([1]))
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
