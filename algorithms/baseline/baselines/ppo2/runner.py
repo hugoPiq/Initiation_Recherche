@@ -36,9 +36,9 @@ class Runner(AbstractEnvRunner):
             # Take actions in env and look the results
             # Infos contains a ton of useful informations
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
+            print("\n",infos)
             for info in infos:
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
-                print("\n",maybeepinfo)
                 if maybeepinfo: epinfos.append(maybeepinfo)
                 # print("I will reset!")
             mb_rewards.append(rewards)
