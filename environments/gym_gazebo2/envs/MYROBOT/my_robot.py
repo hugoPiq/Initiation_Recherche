@@ -123,7 +123,7 @@ class MyRobot(gym.Env):
         # self.action_space = spaces.Box(
         #     np.array([0, 0]), np.array([1, 1]))
         self.action_space = spaces.Box(
-            np.array([-10]), np.array([10]))
+            np.array([0]), np.array([0]))
         # self.observation_space = spaces.Box(
         #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
