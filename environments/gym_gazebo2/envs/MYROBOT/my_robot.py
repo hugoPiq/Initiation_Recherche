@@ -129,6 +129,8 @@ class MyRobot(gym.Env):
 
         self.observation_space = spaces.Box(
             np.array([0]), np.array([1]))
+        print("high", self.observation_space.high)
+        print("low", self.observation_space.low)
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
