@@ -27,7 +27,6 @@ class Runner(AbstractEnvRunner):
             # Given observations, get action value and neglopacs
             # We already have self.obs because Runner superclass run self.obs[:] = env.reset() on init
             actions, values, self.states, neglogpacs = self.model.step(self.obs, S=self.states, M=self.dones)
-            print("I will reset!")
             mb_obs.append(self.obs.copy())
             mb_actions.append(actions)
             mb_values.append(values)
@@ -38,6 +37,7 @@ class Runner(AbstractEnvRunner):
             # Infos contains a ton of useful informations
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
             for info in infos:
+                print("I will reset!")
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
             mb_rewards.append(rewards)
