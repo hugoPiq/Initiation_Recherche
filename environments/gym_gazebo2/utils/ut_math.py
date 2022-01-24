@@ -40,9 +40,9 @@ def computeDistance(vect1, vect2):
 
 def computeRewardDistance(rewardDist):
     alpha = 5
-    done = 0.0002
+    done = 0.02
 
     distanceReward = (math.exp(-alpha * rewardDist) - math.exp(-alpha)) \
         / (1 - math.exp(-alpha)) + 10 * (math.exp(-alpha/done * rewardDist) - math.exp(-alpha/done)) \
         / (1 - math.exp(-alpha/done))
-    return distanceReward - 1
+    return distanceReward
