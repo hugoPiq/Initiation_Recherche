@@ -82,8 +82,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([-np.pi/4, 0]).astype(np.float32),
-            np.array([np.pi/4, 1]).astype(np.float32))
+            np.array([-np.pi/10, 0]).astype(np.float32),
+            np.array([np.pi/10, 1]).astype(np.float32))
         self.observation_space = spaces.Box(
             np.array([0, -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
