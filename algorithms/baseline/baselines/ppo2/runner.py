@@ -37,9 +37,9 @@ class Runner(AbstractEnvRunner):
             # Infos contains a ton of useful informations
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
             for info in infos:
-                print("I will reset!")
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
+                print("I will reset!")
             mb_rewards.append(rewards)
         #batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
