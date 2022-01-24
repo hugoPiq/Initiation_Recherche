@@ -122,15 +122,14 @@ class MyRobot(gym.Env):
         """ ENV GYM"""
         # self.action_space = spaces.Box(
         #     np.array([0, 0]), np.array([1, 1]))
-        self.action_space = spaces.Tuple(
-            (spaces.Discrete(0), spaces.Discrete(1)))
+        self.action_space = spaces.Box(
+            np.array([0]), np.array([1]))
+        print(self.action_space)
         # self.observation_space = spaces.Box(
         #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
-        self.observation_space = spaces.Tuple(
-            (spaces.Discrete(0), spaces.Discrete(1)))
-        # print("high", self.observation_space.high)
-        # print("low", self.observation_space.low)
+        self.observation_space = spaces.Box(
+            np.array([0]), np.array([1]))
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
