@@ -279,7 +279,8 @@ class MARAEnv(gym.Env):
 
             eeVelocities = ut_mara.getEePointsVelocities(
                 ee_link_jacobians, self.environment['end_effector_points'], rot, lastObservations)
-
+            print("last", lastObservations, "ee_pionts", eePos_points,
+                  "ee_vel", eeVelocities, "current", current_eePos_tgt, "rot", rot)
             # Concatenate the information that defines the robot state
             # vector, typically denoted asrobot_id 'x'.
             state = np.r_[np.reshape(lastObservations, -1),
@@ -330,12 +331,12 @@ class MARAEnv(gym.Env):
         print("\n obs", obs)
         print("\n joints", obs[self.numJoints:(self.numJoints+3)])
         rewardDist = ut_math.rmseFunc(obs[self.numJoints:(self.numJoints+3)])
-        print("\n", rewardDist)
+        # print("\n", rewardDist)
 
         collided = self.collision()
 
         reward = ut_math.computeReward(rewardDist)
-        print("\n", reward)
+        # print("\n", reward)
 
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
