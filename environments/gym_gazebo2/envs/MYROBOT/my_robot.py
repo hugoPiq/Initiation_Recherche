@@ -121,7 +121,7 @@ class MyRobot(gym.Env):
         """ ENV GYM"""
         self.action_space = spaces.Box(np.array([0, -1]), np.array([1, 1]))
         self.observation_space = spaces.Box(
-            np.array([0, -1]), np.array([1, 1]))
+            np.array([-1, -1]), np.array([0, 1]))
 
         self.seed()
 
@@ -176,9 +176,8 @@ class MyRobot(gym.Env):
         # Compute reward
         distance = ut_math.computeDistance(
             self._observation_msg, self.targetPosition)
-        reward_distance = ut_math.rmseFunc(distance)
         # print("\ndistance:", distance)
-        reward = ut_math.computeRewardDistance(reward_distance)
+        reward = ut_math.computeRewardDistance(distance)
         # print(reward, "__")
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
