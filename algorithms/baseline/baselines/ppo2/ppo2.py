@@ -144,8 +144,7 @@ def learn(*, network, env, total_timesteps, eval_env = None, seed=None, nsteps=2
         cliprangenow = cliprange(frac)
 
         if update % log_interval == 0 and is_mpi_root: logger.info('Stepping environment...')
-        print("Get mini batch!")
-        # Get minibatch
+        # Get minibatch and reset !
         obs, returns, masks, actions, values, neglogpacs, states, epinfos = runner.run() #pylint: disable=E0632
         if eval_env is not None:
             eval_obs, eval_returns, eval_masks, eval_actions, eval_values, eval_neglogpacs, eval_states, eval_epinfos = eval_runner.run() #pylint: disable=E0632

@@ -40,6 +40,7 @@ class Runner(AbstractEnvRunner):
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
             mb_rewards.append(rewards)
+        print("I will reset!")
         #batch of steps to batch of rollouts
         mb_obs = np.asarray(mb_obs, dtype=self.obs.dtype)
         mb_rewards = np.asarray(mb_rewards, dtype=np.float32)
