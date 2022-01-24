@@ -178,7 +178,7 @@ class MyRobot(gym.Env):
         # self._pub.publish(Twist(linear=Vector3(
         #     x=float(action[1])), angular=Vector3(z=float(action[0]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(1)), angular=Vector3(z=float(0.1))))
+            x=float(1))))
         # Take an observation
         obs = self.take_observation()
         # Compute reward
