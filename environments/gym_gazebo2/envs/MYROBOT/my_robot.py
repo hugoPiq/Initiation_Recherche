@@ -72,7 +72,7 @@ class MyRobot(gym.Env):
 
         # class variables
         self._observation_msg = None
-        self.max_episode_steps = 1024  # default value, can be updated from baselines
+        self.max_episode_steps = 2048  # default value, can be updated from baselines
         self.iterator = 0
         self.reset_jnts = True
 
@@ -123,12 +123,12 @@ class MyRobot(gym.Env):
         # self.action_space = spaces.Box(
         #     np.array([0, 0]), np.array([1, 1]))
         self.action_space = spaces.Box(
-            np.array([-50]), np.array([0]))
+            np.array([-1]), np.array([0]))
         # self.observation_space = spaces.Box(
         #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
         self.observation_space = spaces.Box(
-            np.array([-50]), np.array([0]))
+            np.array([-1]), np.array([0]))
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
@@ -184,12 +184,12 @@ class MyRobot(gym.Env):
             x=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
-        print("dif:", obs)
+        # print("dif:", obs)
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs)
-        print(rewardDist, " ")
+        # print(rewardDist, " ")
         reward = ut_math.computeReward(rewardDist)
-        print(reward, " ")
+        # print(reward, " ")
         # print(reward, "__")
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
