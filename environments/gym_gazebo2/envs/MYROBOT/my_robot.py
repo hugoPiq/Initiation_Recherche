@@ -120,11 +120,15 @@ class MyRobot(gym.Env):
         self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
         """ ENV GYM"""
+        # self.action_space = spaces.Box(
+        #     np.array([0, 0]), np.array([1, 1]))
         self.action_space = spaces.Box(
-            np.array([0, 0]), np.array([1, 1]))
-        self.observation_space = spaces.Box(
-            np.array([0, -np.pi]), np.array([10, np.pi]))
+            np.array([0, 1]))
+        # self.observation_space = spaces.Box(
+        #     np.array([0, -np.pi]), np.array([10, np.pi]))
 
+        self.observation_space = spaces.Box(
+            np.array([0, 1]))
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
@@ -155,7 +159,7 @@ class MyRobot(gym.Env):
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = current_position - self.targetPosition
-        state = np.r_[np.reshape(diff_position[0:2], -1)]
+        state = np.r_[np.reshape(diff_position[0:1], -1)]
         return state
 
     def seed(self, seed=None):
@@ -208,7 +212,7 @@ class MyRobot(gym.Env):
             self.buffer_dist_rewards = []
             self.buffer_tot_rewards = []
         # Return the corresponding observations, rewards, etc.
-        return obs, reward, done, {}
+        return obs, reward, done, info
 
     def reset(self):
         """
