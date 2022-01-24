@@ -175,6 +175,7 @@ class MyRobot(gym.Env):
         obs = self.take_observation()
 
         # Compute reward
+        distance = ut_math.rmseFunc([])
         distance = ut_math.computeDistance(
             self._observation_msg, self.targetPosition)
         # print("\ndistance:", distance)
