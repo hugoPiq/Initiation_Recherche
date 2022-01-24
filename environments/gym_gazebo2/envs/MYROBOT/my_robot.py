@@ -153,8 +153,8 @@ class MyRobot(gym.Env):
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = current_position - self.targetPosition
-        state = [np.reshape(diff_position, -1)]
-
+        state = np.r_[np.reshape(diff_position, -1)]
+        print(state)
         return state
 
     def seed(self, seed=None):
