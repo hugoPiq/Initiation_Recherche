@@ -180,6 +180,7 @@ class MyRobot(gym.Env):
 
         # Compute reward
         distance = ut_math.rmseFunc(obs)
+        print("distance", distance)
         reward = ut_math.computeReward(distance)
         # print(reward, "__")
         # Calculate if the env has been solved
