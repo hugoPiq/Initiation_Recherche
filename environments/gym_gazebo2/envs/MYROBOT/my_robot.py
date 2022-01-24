@@ -187,6 +187,7 @@ class MyRobot(gym.Env):
 
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs)
+        print(rewardDist, " ")
         reward = ut_math.computeReward(rewardDist)
         print(reward, " ")
         # print(reward, "__")
