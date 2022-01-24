@@ -83,14 +83,15 @@ class MyRobot(gym.Env):
 
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
-        self.targetPosition = Vector3(x=10., y=0., z=0.)
+        self.targetPosition = np.asarray(
+            [10., 0., 0.])
         self.target_orientation = np.asarray(
             [0., 0., 0., 0.])  # orientation of free wheel
         modelXml = ut_gazebo.getTargetSdfRobot()
         pose = Pose()
-        pose.position.x = self.targetPosition.x
-        pose.position.y = self.targetPosition.y
-        pose.position.z = self.targetPosition.z + 0.5
+        pose.position.x = self.targetPosition[0]
+        pose.position.y = self.targetPosition[1]
+        pose.position.z = self.targetPosition[2]
         pose.orientation.x = self.target_orientation[1]
         pose.orientation.y = self.target_orientation[2]
         pose.orientation.z = self.target_orientation[3]
@@ -148,8 +149,11 @@ class MyRobot(gym.Env):
         #                                                self._observation_msg.rotation.y,
         #                                                self._observation_msg.rotation.z,
         #                                                self._observation_msg.rotation.w)
-        state = [self._observation_msg.translation.x,
-                 self._observation_msg.translation.y]
+        current_position = np.array([self._observation_msg.translation.x,
+                                     self._observation_msg.translation.y,
+                                     self._observation_msg.translation.z])
+        diff_position = current_position - self.targetPosition
+        state = [np.reshape(diff_position, -1)]
 
         return state
 
@@ -175,10 +179,7 @@ class MyRobot(gym.Env):
         obs = self.take_observation()
 
         # Compute reward
-        distance = ut_math.rmseFunc([])
-        distance = ut_math.computeDistance(
-            self._observation_msg, self.targetPosition)
-        # print("\ndistance:", distance)
+        distance = ut_math.rmseFunc(obs)
         reward = ut_math.computeReward(distance)
         # print(reward, "__")
         # Calculate if the env has been solved
