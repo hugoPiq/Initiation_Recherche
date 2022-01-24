@@ -86,9 +86,8 @@ class MyRobot(gym.Env):
         self.action_space = spaces.Box(
             np.array([-np.pi, 0]).astype(np.float32),
             np.array([np.pi, 1]).astype(np.float32))
-        # self.observation_space = spaces.Box(
-        #     np.array([0, -np.pi]), np.array([10, np.pi]))
-
+        print(self.action_space.high)
+        print(self.action_space.low)
         self.observation_space = spaces.Box(
             np.array([-np.pi, -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
