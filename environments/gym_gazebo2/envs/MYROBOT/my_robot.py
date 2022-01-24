@@ -184,7 +184,7 @@ class MyRobot(gym.Env):
             x=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
-
+        print("dif:", obs)
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs)
         print(rewardDist, " ")
