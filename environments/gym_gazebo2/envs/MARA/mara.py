@@ -279,8 +279,6 @@ class MARAEnv(gym.Env):
 
             eeVelocities = ut_mara.getEePointsVelocities(
                 ee_link_jacobians, self.environment['end_effector_points'], rot, lastObservations)
-            print("last", lastObservations, "ee_pionts", eePos_points,
-                  "ee_vel", eeVelocities, "current", current_eePos_tgt, "rot", rot)
             # Concatenate the information that defines the robot state
             # vector, typically denoted asrobot_id 'x'.
             state = np.r_[np.reshape(lastObservations, -1),
@@ -288,6 +286,8 @@ class MARAEnv(gym.Env):
                           np.reshape(eeVelocities, -1),
                           np.reshape(current_eePos_tgt, -1),
                           np.reshape(rot.reshape(1, 9), -1)]
+            print(state)
+
             return state
 
     def collision(self):
