@@ -119,9 +119,9 @@ class MyRobot(gym.Env):
         self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
         """ ENV GYM"""
-        self.action_space = spaces.Box(np.array([-1, -1]), np.array([1, 1]))
+        self.action_space = spaces.Box(np.array([0, -1]), np.array([1, 1]))
         self.observation_space = spaces.Box(
-            np.array([-1, -1]), np.array([1, 1]))
+            np.array([0, -1]), np.array([1, 1]))
 
         self.seed()
 
