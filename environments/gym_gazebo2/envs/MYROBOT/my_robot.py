@@ -76,7 +76,7 @@ class MyRobot(gym.Env):
         self.iterator = 0
         self.reset_jnts = True
         self.obs_dim = 3
-        self.num_envs = 2
+        self.num_envs = 1
         #############################
         #   Environment hyperparams
         #############################
