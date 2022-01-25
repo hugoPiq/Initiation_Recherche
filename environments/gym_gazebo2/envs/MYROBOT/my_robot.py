@@ -82,12 +82,14 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([0, 10]).astype(np.float32),
-            np.array([0, 10]).astype(np.float32))
+            np.array([1, 1]).astype(np.float32),
+            np.array([2, 2]).astype(np.float32))
+        print("Action space high:", self.action_space.high)
+        print("Action space low:", self.action_space.low)
         self.observation_space = spaces.Box(
             np.array([-np.float('inf'), -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
-            np.array([-np.float('inf'), np.float('inf'), np.float('inf')]).astype(np.float32))
+            np.array([np.float('inf'), np.float('inf'), np.float('inf')]).astype(np.float32))
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
