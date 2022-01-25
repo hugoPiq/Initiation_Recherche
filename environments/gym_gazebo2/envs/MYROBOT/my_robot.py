@@ -206,7 +206,6 @@ class MyRobot(gym.Env):
             std_dist_tgt = np.std(self.buffer_dist_rewards)
             min_dist_tgt = min(self.buffer_dist_rewards)
             skew_dist_tgt = skew(self.buffer_dist_rewards)
-
             max_tot_rew = max(self.buffer_tot_rewards)
             mean_tot_rew = np.mean(self.buffer_tot_rewards)
             std_tot_rew = np.std(self.buffer_tot_rewards)
