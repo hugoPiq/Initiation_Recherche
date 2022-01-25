@@ -33,7 +33,7 @@ config.gpu_options.allow_growth = True
 
 # Create environment
 env_name = 'MYROBOT-v0'
-env = DummyVecEnv([gym.make(env_name)])
+env = DummyVecEnv([[gym.make(env_name)]])
 
 # Hyperparamaters for ppo2 model
 nminibatches = 4
