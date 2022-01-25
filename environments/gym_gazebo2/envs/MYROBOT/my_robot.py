@@ -83,8 +83,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([-np.pi, -5]).astype(np.float32),
-            np.array([np.pi, 5]).astype(np.float32))
+            np.array([-5]).astype(np.float32),
+            np.array([5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
@@ -184,8 +184,10 @@ class MyRobot(gym.Env):
         # print("action:", action)
         # Execute "action"
         # Control only x and yaw
+        # self._pub.publish(Twist(linear=Vector3(
+        #     x=float(action[1])), angular=Vector3(z=float(action[0]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[1])), angular=Vector3(z=float(action[0]))))
+            x=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
         # Compute reward
