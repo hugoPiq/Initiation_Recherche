@@ -85,9 +85,9 @@ class MyRobot(gym.Env):
             np.array([-np.pi, 0]).astype(np.float32),
             np.array([np.pi, 10]).astype(np.float32))
         self.observation_space = spaces.Box(
-            np.array([0, -np.float('inf'), -np.float('inf')]
+            np.array([-np.float('inf'), -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
-            np.array([2*np.pi, np.float('inf'), np.float('inf')]).astype(np.float32))
+            np.array([-np.float('inf'), np.float('inf'), np.float('inf')]).astype(np.float32))
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
@@ -187,28 +187,27 @@ class MyRobot(gym.Env):
         # reward = rewardDist
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
-        # self.buffer_dist_rewards.append(rewardDist)
-        # self.buffer_tot_rewards.append(reward)
+        self.buffer_dist_rewards.append(rewardDist)
+        self.buffer_tot_rewards.append(reward)
         info = {}
-        # if self.iterator % self.max_episode_steps == 0:
+        if self.iterator % self.max_episode_steps == 0:
+            max_dist_tgt = max(self.buffer_dist_rewards)
+            mean_dist_tgt = np.mean(self.buffer_dist_rewards)
+            std_dist_tgt = np.std(self.buffer_dist_rewards)
+            min_dist_tgt = min(self.buffer_dist_rewards)
+            skew_dist_tgt = skew(self.buffer_dist_rewards)
 
-        #     max_dist_tgt = max(self.buffer_dist_rewards)
-        #     mean_dist_tgt = np.mean(self.buffer_dist_rewards)
-        #     std_dist_tgt = np.std(self.buffer_dist_rewards)
-        #     min_dist_tgt = min(self.buffer_dist_rewards)
-        #     skew_dist_tgt = skew(self.buffer_dist_rewards)
+            max_tot_rew = max(self.buffer_tot_rewards)
+            mean_tot_rew = np.mean(self.buffer_tot_rewards)
+            std_tot_rew = np.std(self.buffer_tot_rewards)
+            min_tot_rew = min(self.buffer_tot_rewards)
+            skew_tot_rew = skew(self.buffer_tot_rewards)
 
-        #     max_tot_rew = max(self.buffer_tot_rewards)
-        #     mean_tot_rew = np.mean(self.buffer_tot_rewards)
-        #     std_tot_rew = np.std(self.buffer_tot_rewards)
-        #     min_tot_rew = min(self.buffer_tot_rewards)
-        #     skew_tot_rew = skew(self.buffer_tot_rewards)
-
-        #     info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
-        #                       "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
-        #                       "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew, "ep_rew_skew": skew_tot_rew}}
-        #     self.buffer_dist_rewards = []
-        #     self.buffer_tot_rewards = []
+            info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
+                              "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
+                              "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew, "ep_rew_skew": skew_tot_rew}}
+            self.buffer_dist_rewards = []
+            self.buffer_tot_rewards = []
         # Return the corresponding observations, rewards, etc.
         return obs, reward, done, info
 
