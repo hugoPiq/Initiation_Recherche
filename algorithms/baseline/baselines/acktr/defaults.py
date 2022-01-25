@@ -59,7 +59,7 @@ def my_robot_mlp():
         lrschedule='linear',
         log_interval=1,
         save_interval = 10,
-        env_name = 'MARA-v0',
+        env_name = 'MYROBOT-v0',
         # env_name = 'MARAOrient-v0',
         # env_name = 'MARACollision-v0',
         # env_name = 'MARACollisionOrient-v0',
