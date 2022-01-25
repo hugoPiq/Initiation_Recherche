@@ -198,8 +198,8 @@ class MyRobot(gym.Env):
         done = bool(self.iterator == self.max_episode_steps)
         self.buffer_dist_rewards.append(rewardDist)
         self.buffer_tot_rewards.append(reward)
-        self.action_tot_angle.append(action[0])
-        self.action_tot_vitesse.append(action[1])
+        # self.action_tot_angle.append(action[0])
+        # self.action_tot_vitesse.append(action[1])
         info = {}
         if self.iterator % self.max_episode_steps == 0:
             max_dist_tgt = max(self.buffer_dist_rewards)
