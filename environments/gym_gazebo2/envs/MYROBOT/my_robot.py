@@ -84,8 +84,10 @@ class MyRobot(gym.Env):
         self.action_space = spaces.Box(
             np.array([1, 1]).astype(np.float32),
             np.array([2, 2]).astype(np.float32))
+        print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
+
         self.observation_space = spaces.Box(
             np.array([-np.float('inf'), -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
@@ -166,6 +168,7 @@ class MyRobot(gym.Env):
 
     def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
+
         return [seed]
 
     def step(self, action):
