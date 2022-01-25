@@ -57,12 +57,13 @@ noptepochs = 4
 cliprange = 0.2
 num_layers = 2,
 num_hidden = 64,
-layer_norm = False,
+layer_norm = False
+save_interval = 10
 # Learn
 learn(network=network, env=env, total_timesteps=total_timesteps, eval_env=None, seed=None, nsteps=nsteps, ent_coef=ent_coef, lr=lr,
       vf_coef=vf_coef,  max_grad_norm=max_grad_norm, gamma=gamma, lam=lam,
       log_interval=log_interval, nminibatches=nminibatches, noptepochs=noptepochs, cliprange=cliprange,
-      save_interval=0, load_path=None, model_fn=None, update_fn=None, init_fn=None, mpi_rank_weight=1, comm=None)
+      save_interval=save_interval, load_path=None, model_fn=None, update_fn=None, init_fn=None, mpi_rank_weight=1, comm=None)
 
 env.dummy().gg2().close()
 os.kill(os.getpid(), 9)
