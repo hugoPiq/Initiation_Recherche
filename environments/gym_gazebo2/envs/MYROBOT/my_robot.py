@@ -75,7 +75,7 @@ class MyRobot(gym.Env):
         self.max_episode_steps = 1024  # default value, can be updated from baselines
         self.iterator = 0
         self.reset_jnts = True
-
+        self.obs_dim = 3
         #############################
         #   Environment hyperparams
         #############################
