@@ -107,8 +107,6 @@ transfer_path = alg_kwargs['transfer_path']
 alg_kwargs.pop('env_name')
 alg_kwargs.pop('trained_path')
 alg_kwargs.pop('transfer_path')
-print(env)
-print(alg_kwargs)
 if transfer_path is not None:
     # Do transfer learning
     _ = learn(env=env, load_path=transfer_path, **alg_kwargs)
