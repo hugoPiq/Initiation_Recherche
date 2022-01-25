@@ -91,7 +91,7 @@ class MyRobot(gym.Env):
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
-            [10., 0., 0.])
+            [3., 3., 0.])
         self.target_orientation = np.asarray(
             [0., 0., 0., 0.])  # orientation of free wheel
         modelXml = ut_gazebo.getTargetSdfRobot()
