@@ -186,7 +186,7 @@ class MyRobot(gym.Env):
         # Execute "action"
         # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[1, 0])), angular=Vector3(z=float(action[0, 0]))))
+            x=float(action[0][1])), angular=Vector3(z=float(action[0][0]))))
         # Take an observation
         obs = self.take_observation()
         # Compute reward
