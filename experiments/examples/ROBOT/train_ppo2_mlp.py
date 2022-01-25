@@ -63,7 +63,9 @@ def make_env():
 
 # Get dictionary from baselines/ppo2/defaults
 env_type = 'my_robot_mlp'
-alg_kwargs = get_learn_function_defaults('ppo2', env_type)
+alg_kwargs = get_learn_function_defaults('ppo2', 'my_robot_mlp')
+env_name = alg_kwargs['env_name']
+alg_kwargs['total_timesteps'] = alg_kwargs['nsteps']
 
 # Create needed folders
 timedate = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
