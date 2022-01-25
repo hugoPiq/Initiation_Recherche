@@ -112,3 +112,36 @@ def mara_lstm():
         # transfer_path = '/tmp/ros2learn/MARACollisionOrientRandomTarget-v0/ppo2_lstm/checkpoints/00090',
         trained_path = '/home/rkojcev/MARA_NN/lstm_server/best'
     )
+
+def my_robot_lstm():
+    return dict(
+        nlstm = 256,
+        layer_norm = False,
+        # nbatch = nenvs * nsteps
+        # nbatch_train = nbatch // nminibatches
+        # assert nbatch % nminibatches == 0
+        # assert batchsize == nbatch_train >= nsteps
+        nsteps = 1024,
+        #otherwise, last minibatch gets noisy gradient,
+        nminibatches = 2, #batchsize = nevn * nsteps // nminibatches
+        lam = 0.95,
+        gamma = 0.99,
+        noptepochs = 10,
+        log_interval = 1,
+        ent_coef = 0.0,
+        lr = lambda f: 3e-4 * f,
+        cliprange = 0.2,
+        vf_coef = 0.5,
+        max_grad_norm = 0.5,
+        seed = 0,
+        value_network = 'shared',
+        network = 'lstm',
+        total_timesteps = 1e8,
+        save_interval = 10,
+        env_name = 'MYROBOT-v0',
+        num_envs = 8,
+        transfer_path = None,
+        # transfer_path = '/tmp/ros2learn/MARACollisionOrientRandomTarget-v0/ppo2_lstm/checkpoints/00090',
+        trained_path = '/tmp/ros2learn/MYROBOT-v0/ppo2_lstm/2019-04-02_13h18min/checkpoints/best'
+    )
+
