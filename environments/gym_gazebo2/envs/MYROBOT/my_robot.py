@@ -129,6 +129,7 @@ class MyRobot(gym.Env):
         self.seed()
         self.buffer_dist_rewards = []
         self.buffer_tot_rewards = []
+        self.action_tot = []
 
     def observation_callback(self, message):
         """
@@ -189,6 +190,7 @@ class MyRobot(gym.Env):
         done = bool(self.iterator == self.max_episode_steps)
         self.buffer_dist_rewards.append(rewardDist)
         self.buffer_tot_rewards.append(reward)
+        self.action_tot.append(action)
         info = {}
         if self.iterator % self.max_episode_steps == 0:
             max_dist_tgt = max(self.buffer_dist_rewards)
@@ -201,11 +203,14 @@ class MyRobot(gym.Env):
             mean_tot_rew = np.mean(self.buffer_tot_rewards)
             std_tot_rew = np.std(self.buffer_tot_rewards)
             min_tot_rew = min(self.buffer_tot_rewards)
+            action_min = min(self.action_tot)
+            action_max = max(self.action_tot)
             skew_tot_rew = skew(self.buffer_tot_rewards)
 
             info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
                               "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
-                              "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew, "ep_rew_skew": skew_tot_rew}}
+                              "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew,
+                              "ep_rew_skew": skew_tot_rew, "action min:": action_min, "action_max": action_max}}
             self.buffer_dist_rewards = []
             self.buffer_tot_rewards = []
         # Return the corresponding observations, rewards, etc.
