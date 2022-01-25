@@ -216,10 +216,10 @@ class MyRobot(gym.Env):
             action_max_vitesse = max(self.action_tot_vitesse)
             skew_tot_rew = skew(self.buffer_tot_rewards)
 
-            info = {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
-                    "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
-                    "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew,
-                    "ep_rew_skew": skew_tot_rew, "action min_angle:": action_min_angle, "action min_vitesse:": action_min_vitesse, "action max_angle:": action_max_angle, "action max_vitesse:": action_max_vitesse}
+            info = {"infos": {"ep_dist_max": max_dist_tgt, "ep_dist_mean": mean_dist_tgt, "ep_dist_min": min_dist_tgt,
+                              "ep_rew_max": max_tot_rew, "ep_rew_mean": mean_tot_rew, "ep_rew_min": min_tot_rew,
+                              "ep_dist_skew": skew_dist_tgt, "ep_dist_std": std_dist_tgt, "ep_rew_std": std_tot_rew,
+                              "ep_rew_skew": skew_tot_rew, "action min_angle:": action_min_angle, "action min_vitesse:": action_min_vitesse, "action max_angle:": action_max_angle, "action max_vitesse:": action_max_vitesse}}
             self.buffer_dist_rewards = []
             self.buffer_tot_rewards = []
             self.action_tot_angle = []
