@@ -56,7 +56,7 @@ def mara_mlp():
 def my_robot_mlp():
     return dict(
         num_layers = 2,
-        num_hidden = 16,
+        num_hidden = 64,
         layer_norm = False,
         nsteps = 1024,
         nminibatches = 4, #batchsize = nevn * nsteps // nminibatches
