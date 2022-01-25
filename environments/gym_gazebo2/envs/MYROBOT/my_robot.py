@@ -82,8 +82,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([1, 1]).astype(np.float32),
-            np.array([2, 2]).astype(np.float32))
+            np.array([-np.pi, 0]).astype(np.float32),
+            np.array([np.pi, 5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
@@ -183,6 +183,7 @@ class MyRobot(gym.Env):
         # print("action:", action)
         # Execute "action"
         # Control only x and yaw
+        action = self.action_space.sample()
         self._pub.publish(Twist(linear=Vector3(
             x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
