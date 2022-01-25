@@ -162,7 +162,7 @@ class MyRobot(gym.Env):
         current_position = np.array([self._observation_msg.translation.x,
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
-        diff_position = current_position - self.targetPosition
+        diff_position = self.targetPosition - current_position
         state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
