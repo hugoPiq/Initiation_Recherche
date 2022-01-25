@@ -60,7 +60,7 @@ def my_robot_mlp():
         layer_norm = False,
         nsteps = 1024,
         nminibatches = 4, #batchsize = nevn * nsteps // nminibatches
-        lam = 0.90,
+        lam = 0.95,
         gamma = 0.99,
         noptepochs = 10,
         log_interval = 1,

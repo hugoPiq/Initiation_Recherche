@@ -21,7 +21,7 @@ def make_env():
 
 
 # Get dictionary from baselines/acktr/defaults
-alg_kwargs = defaults.mara_mlp()
+alg_kwargs = defaults.my_robot_mlp()
 
 # Create needed folders
 timedate = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
