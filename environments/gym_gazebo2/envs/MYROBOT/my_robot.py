@@ -217,6 +217,8 @@ class MyRobot(gym.Env):
                               "ep_rew_skew": skew_tot_rew, "action min_angle:": action_min_angle, "action min_vitesse:": action_min_vitesse, "action max_angle:": action_max_angle, "action max_vitesse:": action_max_vitesse}}
             self.buffer_dist_rewards = []
             self.buffer_tot_rewards = []
+            self.action_tot_angle = []
+            self.action_tot_vitesse = []
         # Return the corresponding observations, rewards, etc.
         return obs, reward, done, info
 
