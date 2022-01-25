@@ -183,7 +183,6 @@ class MyRobot(gym.Env):
         # print("action:", action)
         # Execute "action"
         # Control only x and yaw
-        action = self.action_space.sample()
         self._pub.publish(Twist(linear=Vector3(
             x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
