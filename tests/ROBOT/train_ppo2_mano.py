@@ -13,7 +13,7 @@ import multiprocessing
 
 from importlib import import_module
 from baselines import bench, logger
-from baselines.ppo2 import ppo2
+from baselines.ppo2.ppo2 import learn
 from baselines.ppo2 import model as ppo
 from baselines.common import set_global_seeds
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
