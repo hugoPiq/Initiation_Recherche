@@ -141,7 +141,7 @@ assert obs is not None
 assert env.dummy().gg2().obs_dim == len(obs[0])
 
 actions = model.step_deterministic(obs)[0]
-assert len(actions[0]) == 6
+assert len(actions[0]) == 2
 
 obs, rew, done, _ = env.step_runtime(actions)
 assert (obs, rew, done) is not None
