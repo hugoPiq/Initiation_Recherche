@@ -36,7 +36,6 @@ class Runner(AbstractEnvRunner):
             # Infos contains a ton of useful informations and reset
             self.obs[:], rewards, self.dones, infos = self.env.step(actions)
             for info in infos:
-                print(info)
                 maybeepinfo = {sub_key:info[key][sub_key] for key in info.keys() for sub_key in info[key]}
                 if maybeepinfo: epinfos.append(maybeepinfo)
             mb_rewards.append(rewards)
@@ -63,6 +62,7 @@ class Runner(AbstractEnvRunner):
             delta = mb_rewards[t] + self.gamma * nextvalues * nextnonterminal - mb_values[t]
             mb_advs[t] = lastgaelam = delta + self.gamma * self.lam * nextnonterminal * lastgaelam
         mb_returns = mb_advs + mb_values
+        print(mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs)
         return (*map(sf01, (mb_obs, mb_returns, mb_dones, mb_actions, mb_values, mb_neglogpacs)),
             mb_states, epinfos)
 # obs, returns, masks, actions, values, neglogpacs, states = runner.run()
