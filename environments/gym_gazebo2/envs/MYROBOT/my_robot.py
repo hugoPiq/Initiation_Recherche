@@ -154,16 +154,15 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        # print(self._observation_msg)
-        # rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
-        #                                                self._observation_msg.rotation.y,
-        #                                                self._observation_msg.rotation.z,
-        #                                                self._observation_msg.rotation.w)
+        print("observation", self._observation_msg)
+        rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
+                                                       self._observation_msg.rotation.y,
+                                                       self._observation_msg.rotation.z,
+                                                       self._observation_msg.rotation.w)
         current_position = np.array([self._observation_msg.translation.x,
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = self.targetPosition - current_position
-        rotation = [0, 0, 0.]
         state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
@@ -189,10 +188,8 @@ class MyRobot(gym.Env):
             x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
-        print("obs:", obs)
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs[1:3])
-        print(rewardDist, " ")
         reward = ut_math.computeRewardDistance(rewardDist)
         # reward = rewardDist
         # Calculate if the env has been solved
