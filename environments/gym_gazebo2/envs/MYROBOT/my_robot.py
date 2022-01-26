@@ -155,7 +155,6 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        print("observation", self._observation_msg)
         rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
                                                        self._observation_msg.rotation.y,
                                                        self._observation_msg.rotation.z,

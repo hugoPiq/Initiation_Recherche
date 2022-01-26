@@ -6,7 +6,6 @@ import gym
 import gym_gazebo2
 import time
 env = gym.make('MYROBOT-v0')
-time.sleep(10)
 print(env._observation_msg)
 while True:
     observation, reward, done, info = env.step([0, 1])
