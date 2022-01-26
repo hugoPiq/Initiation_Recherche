@@ -7,12 +7,8 @@ import gym_gazebo2
 import time
 env = gym.make('MYROBOT-v0')
 
-#env = gym.make('MARAOrient-v0')
-#env = gym.make('MARACollision-v0')
-#env = gym.make('MARACollisionOrient-v0')
-#env = gym.make('MARACollisionOrientRandomTarget-v0')
-
-
 while True:
     # take a random action
-    observation, reward, done, info = env.step([0, 0, 0])
+    observation, reward, done, info = env.step([0, 1, ])
+    time.sleep(5000)
+    env.reset()

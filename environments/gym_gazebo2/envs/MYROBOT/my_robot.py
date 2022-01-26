@@ -83,8 +83,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([-5]).astype(np.float32),
-            np.array([5]).astype(np.float32))
+            np.array([[-np.pi, -5]]).astype(np.float32),
+            np.array([np.pi, 5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
@@ -117,7 +117,7 @@ class MyRobot(gym.Env):
         self.spawn_request.initial_pose = pose
         self.spawn_request.reference_frame = "world"
 
-        # #ROS2 Spawn Entity
+        # ROS2 Spawn Entity
         target_future = spawn_cli.call_async(self.spawn_request)
         rclpy.spin_until_future_complete(self.node, target_future)
 
@@ -154,7 +154,6 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        # print("\n matrix", general_utils.quaternion_to_matrix(quaternion))
         rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
                                                        self._observation_msg.rotation.y,
                                                        self._observation_msg.rotation.z,
@@ -181,18 +180,17 @@ class MyRobot(gym.Env):
             - done (status)
         """
         self.iterator += 1
-        # print("action:", action)
+        print("action:", action)
         # Execute "action"
         # Control only x and yaw
-        # self._pub.publish(Twist(linear=Vector3(
-        #     x=float(action[1])), angular=Vector3(z=float(action[0]))))
         self._pub.publish(Twist(linear=Vector3(
-            x=float(action[0]))))
+            x=float(action[1])), angular=Vector3(z=float(action[0]))))
         # Take an observation
         obs = self.take_observation()
+        print("obs:", obs)
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs[1:3])
-        # print(rewardDist, " ")
+        print(rewardDist, " ")
         reward = ut_math.computeRewardDistance(rewardDist)
         # reward = rewardDist
         # Calculate if the env has been solved
