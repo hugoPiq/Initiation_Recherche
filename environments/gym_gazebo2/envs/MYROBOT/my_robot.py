@@ -93,6 +93,7 @@ class MyRobot(gym.Env):
             np.array([-np.float('inf'), -np.float('inf'), -np.float('inf')]
                      ).astype(np.float32),
             np.array([np.float('inf'), np.float('inf'), np.float('inf')]).astype(np.float32))
+
         """ TARGET"""
         spawn_cli = self.node.create_client(SpawnEntity, '/spawn_entity')
         self.targetPosition = np.asarray(
