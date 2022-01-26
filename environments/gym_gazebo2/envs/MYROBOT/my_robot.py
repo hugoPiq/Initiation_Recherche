@@ -141,7 +141,6 @@ class MyRobot(gym.Env):
         """
         Callback method for the subscriber of JointTrajectoryControllerState
         """
-        print("message", message)
         self._observation_msg = message.transforms[0].transform
 
     def set_episode_size(self, episode_size):
@@ -155,14 +154,16 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
-                                                       self._observation_msg.rotation.y,
-                                                       self._observation_msg.rotation.z,
-                                                       self._observation_msg.rotation.w)
+        print(self._observation_msg)
+        # rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
+        #                                                self._observation_msg.rotation.y,
+        #                                                self._observation_msg.rotation.z,
+        #                                                self._observation_msg.rotation.w)
         current_position = np.array([self._observation_msg.translation.x,
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = self.targetPosition - current_position
+        rotation = [0, 0, 0]
         state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
