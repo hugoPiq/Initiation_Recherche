@@ -154,7 +154,7 @@ class MyRobot(gym.Env):
         # Take an observation
         rclpy.spin_once(self.node)
         # Robot State
-        print(self._observation_msg)
+        # print(self._observation_msg)
         # rotation = general_utils.euler_from_quaternion(self._observation_msg.rotation.x,
         #                                                self._observation_msg.rotation.y,
         #                                                self._observation_msg.rotation.z,
@@ -182,7 +182,7 @@ class MyRobot(gym.Env):
             - done (status)
         """
         self.iterator += 1
-        print("action:", action)
+        # print("action:", action)
         # Execute "action"
         # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
