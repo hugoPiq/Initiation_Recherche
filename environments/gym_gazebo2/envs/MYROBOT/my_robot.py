@@ -83,8 +83,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([[-np.pi, -5]]).astype(np.float32),
-            np.array([[np.pi, 5]]).astype(np.float32))
+            np.array([-np.pi, -5]).astype(np.float32),
+            np.array([np.pi, 5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
@@ -163,7 +163,7 @@ class MyRobot(gym.Env):
                                      self._observation_msg.translation.y,
                                      self._observation_msg.translation.z])
         diff_position = self.targetPosition - current_position
-        rotation = [0, 0, 0]
+        rotation = [0, 0, 0.]
         state = np.r_[rotation[2], np.reshape(diff_position[0:2], -1)]
         # state = np.r_[np.reshape(diff_position[0:2], -1)]
         return state
