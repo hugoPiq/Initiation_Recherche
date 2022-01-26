@@ -8,7 +8,7 @@ import time
 env = gym.make('MYROBOT-v0')
 
 while True:
-    time.sleep(2)
+    time.sleep(5)
     # take a random action
     observation, reward, done, info = env.step([0, 1, ])
     time.sleep(2)
