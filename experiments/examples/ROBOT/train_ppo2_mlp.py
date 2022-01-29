@@ -61,7 +61,6 @@ if __name__ == "__main__":
     config.gpu_options.allow_growth = True
 
     tf.Session(config=config).__enter__()
-    tf.reset_default_graph()
     """ GET HYPERPARAMETERS"""
     # Get dictionary from baselines/ppo2/defaults
     env_type = 'my_robot_mlp'
