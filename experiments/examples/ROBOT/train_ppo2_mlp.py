@@ -11,20 +11,6 @@ from importlib import import_module
 from baselines import bench, logger
 from baselines.ppo2 import ppo2
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
-from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
-ncpu = multiprocessing.cpu_count()
-
-if sys.platform == 'darwin':
-    ncpu //= 2
-
-config = tf.ConfigProto(allow_soft_placement=True,
-                        intra_op_parallelism_threads=ncpu,
-                        inter_op_parallelism_threads=ncpu,
-                        log_device_placement=False)
-
-config.gpu_options.allow_growth = True
-
-tf.Session(config=config).__enter__()
 
 
 def get_alg_module(alg, submodule=None):
@@ -61,57 +47,80 @@ def make_env():
     return env
 
 
-# Get dictionary from baselines/ppo2/defaults
-env_type = 'my_robot_mlp'
-alg_kwargs = get_learn_function_defaults('ppo2', env_type)
+if __name__ == "__main__":
+    ncpu = multiprocessing.cpu_count()
+    if sys.platform == 'darwin':
+        ncpu //= 2
 
-# Create needed folders
-timedate = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
-logdir = '/tmp/ros2learn/' + alg_kwargs['env_name'] + '/ppo2_mlp/' + timedate
+    """ CREATE A TF SESSION"""
+    config = tf.ConfigProto(allow_soft_placement=True,
+                            intra_op_parallelism_threads=ncpu,
+                            inter_op_parallelism_threads=ncpu,
+                            log_device_placement=False)
 
-# Generate tensorboard file
-format_strs = os.getenv(
-    'MARA_LOG_FORMAT', 'stdout,log,csv,tensorboard').split(',')
-logger.configure(os.path.abspath(logdir), format_strs)
+    config.gpu_options.allow_growth = True
 
-with open(logger.get_dir() + "/parameters.txt", 'w') as out:
-    out.write(
-        'num_layers = ' + str(alg_kwargs['num_layers']) + '\n'
-        + 'num_hidden = ' + str(alg_kwargs['num_hidden']) + '\n'
-        + 'layer_norm = ' + str(alg_kwargs['layer_norm']) + '\n'
-        + 'nsteps = ' + str(alg_kwargs['nsteps']) + '\n'
-        + 'nminibatches = ' + str(alg_kwargs['nminibatches']) + '\n'
-        + 'lam = ' + str(alg_kwargs['lam']) + '\n'
-        + 'gamma = ' + str(alg_kwargs['gamma']) + '\n'
-        + 'noptepochs = ' + str(alg_kwargs['noptepochs']) + '\n'
-        + 'log_interval = ' + str(alg_kwargs['log_interval']) + '\n'
-        + 'ent_coef = ' + str(alg_kwargs['ent_coef']) + '\n'
-        + 'cliprange = ' + str(alg_kwargs['cliprange']) + '\n'
-        + 'vf_coef = ' + str(alg_kwargs['vf_coef']) + '\n'
-        + 'max_grad_norm = ' + str(alg_kwargs['max_grad_norm']) + '\n'
-        + 'seed = ' + str(alg_kwargs['seed']) + '\n'
-        + 'value_network = ' + alg_kwargs['value_network'] + '\n'
-        + 'network = ' + alg_kwargs['network'] + '\n'
-        + 'total_timesteps = ' + str(alg_kwargs['total_timesteps']) + '\n'
-        + 'save_interval = ' + str(alg_kwargs['save_interval']) + '\n'
-        + 'env_name = ' + alg_kwargs['env_name'] + '\n'
-        + 'transfer_path = ' + str(alg_kwargs['transfer_path']))
+    tf.Session(config=config).__enter__()
 
-env = DummyVecEnv([make_env])
-# env = SubprocVecEnv([make_env])
+    """ GET HYPERPARAMETERS"""
+    # Get dictionary from baselines/ppo2/defaults
+    env_type = 'my_robot_mlp'
+    alg_kwargs = get_learn_function_defaults('ppo2', env_type)
 
-learn = get_learn_function('ppo2')
-transfer_path = alg_kwargs['transfer_path']
+    # Create needed folders
+    timedate = datetime.now().strftime('%Y-%m-%d_%Hh%Mmin')
+    logdir = '/tmp/ros2learn/' + \
+        alg_kwargs['env_name'] + '/ppo2_mlp/' + timedate
 
-# Remove unused parameters for training
-alg_kwargs.pop('env_name')
-alg_kwargs.pop('trained_path')
-alg_kwargs.pop('transfer_path')
-if transfer_path is not None:
-    # Do transfer learning
-    _ = learn(env=env, load_path=transfer_path, **alg_kwargs)
-else:
-    _ = learn(env=env, **alg_kwargs)
+    # Generate tensorboard file
+    format_strs = os.getenv(
+        'MARA_LOG_FORMAT', 'stdout,log,csv,tensorboard').split(',')
+    logger.configure(os.path.abspath(logdir), format_strs)
 
-env.dummy().gg2().close()
-os.kill(os.getpid(), 9)
+    # Save hyperparameters
+    # with open(logger.get_dir() + "/parameters.txt", 'w') as out:
+    #     out.write(
+    #         'num_layers = ' + str(alg_kwargs['num_layers']) + '\n'
+    #         + 'num_hidden = ' + str(alg_kwargs['num_hidden']) + '\n'
+    #         + 'layer_norm = ' + str(alg_kwargs['layer_norm']) + '\n'
+    #         + 'nsteps = ' + str(alg_kwargs['nsteps']) + '\n'
+    #         + 'nminibatches = ' + str(alg_kwargs['nminibatches']) + '\n'
+    #         + 'lam = ' + str(alg_kwargs['lam']) + '\n'
+    #         + 'gamma = ' + str(alg_kwargs['gamma']) + '\n'
+    #         + 'noptepochs = ' + str(alg_kwargs['noptepochs']) + '\n'
+    #         + 'log_interval = ' + str(alg_kwargs['log_interval']) + '\n'
+    #         + 'ent_coef = ' + str(alg_kwargs['ent_coef']) + '\n'
+    #         + 'cliprange = ' + str(alg_kwargs['cliprange']) + '\n'
+    #         + 'vf_coef = ' + str(alg_kwargs['vf_coef']) + '\n'
+    #         + 'max_grad_norm = ' + str(alg_kwargs['max_grad_norm']) + '\n'
+    #         + 'seed = ' + str(alg_kwargs['seed']) + '\n'
+    #         + 'value_network = ' + alg_kwargs['value_network'] + '\n'
+    #         + 'network = ' + alg_kwargs['network'] + '\n'
+    #         + 'total_timesteps = ' + str(alg_kwargs['total_timesteps']) + '\n'
+    #         + 'save_interval = ' + str(alg_kwargs['save_interval']) + '\n'
+    #         + 'env_name = ' + alg_kwargs['env_name'] + '\n'
+    #         + 'transfer_path = ' + str(alg_kwargs['transfer_path']))
+
+    """ MAKE THE ENVIRONMENT"""
+    # For single instance
+    env = DummyVecEnv([make_env])
+    # For mulitple instances
+    # env = SubprocVecEnv([make_env])
+
+    learn = get_learn_function('ppo2')
+    transfer_path = alg_kwargs['transfer_path']
+
+    # Remove unused parameters for training
+    alg_kwargs.pop('env_name')
+    alg_kwargs.pop('trained_path')
+    alg_kwargs.pop('transfer_path')
+
+    """ CALL LEARNING FUNCTION"""
+    if transfer_path is not None:
+        # Do transfer learning
+        _ = learn(env=env, load_path=transfer_path, **alg_kwargs)
+    else:
+        _ = learn(env=env, **alg_kwargs)
+
+    env.dummy().gg2().close()
+    os.kill(os.getpid(), 9)

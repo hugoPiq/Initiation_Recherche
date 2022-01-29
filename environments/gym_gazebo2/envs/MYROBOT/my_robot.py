@@ -33,7 +33,6 @@ class MyRobot(gym.Env):
         args = ut_generic.getArgsParserMARA().parse_args()
         self.gzclient = args.gzclient
         self.realSpeed = args.realSpeed
-        self.velocity = args.velocity
         self.multiInstance = args.multiInstance
         self.port = args.port
 
@@ -109,7 +108,6 @@ class MyRobot(gym.Env):
             Twist, '/cmd_vel')
         self._sub = self.node.create_subscription(
             msg.TFMessage, '/tf', self.observation_callback)
-
         # For reset purpose
         self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
@@ -172,7 +170,6 @@ class MyRobot(gym.Env):
         # Compute reward
         rewardDist = ut_math.rmseFunc(obs[1:3])
         reward = ut_math.computeRewardDistance(rewardDist)
-        # reward = rewardDist
         # Calculate if the env has been solved
         done = bool(self.iterator == self.max_episode_steps)
         self.buffer_dist_rewards.append(rewardDist)
