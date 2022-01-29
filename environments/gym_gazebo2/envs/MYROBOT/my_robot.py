@@ -1,40 +1,21 @@
 import re
-from matplotlib.transforms import Transform
-from gazebo_msgs.msg import ContactState, ModelState  # , GetModelList
-from builtin_interfaces.msg import Duration
 from geometry_msgs.msg import Pose
-from std_msgs.msg import String
 # Used for publishing mara joint angles.
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from rclpy.qos import QoSReliabilityPolicy
-from rclpy.qos import QoSProfile
-import argparse
-import subprocess
 from gazebo_msgs.srv import SpawnEntity
-from gym_gazebo2.utils import ut_generic, ut_launch, ut_mara, ut_math, ut_gazebo, tree_urdf, general_utils
+from gym_gazebo2.utils import ut_generic, ut_launch, ut_math, ut_gazebo, general_utils
 from scipy.stats import skew
 from tf2_msgs import msg
 from geometry_msgs.msg import Twist, Vector3
-from PyKDL import ChainJntToJacSolver  # For KDL Jacobians
 from ros2pkg.api import get_prefix_path
 from std_srvs.srv import Empty
-from control_msgs.msg import JointTrajectoryControllerState
 # Used for publishing mara joint angles.
 from trajectory_msgs.msg import JointTrajectory
-from rclpy.qos import qos_profile_sensor_data
 import rclpy
 from gym.utils import seeding
-from gym_gazebo2.utils import ut_launch, ut_generic, ut_mara, ut_math, tree_urdf, general_utils
-from gym import utils, spaces
-import transforms3d as tf3d
-import math
-import sys
-import signal
+from gym import spaces
 import psutil
-import os
-import copy
 import numpy as np
-import time
 import gym
 gym.logger.set_level(40)  # hide warnings
 
@@ -83,8 +64,8 @@ class MyRobot(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([[-np.pi, -5.]]),
-            np.array([[np.pi, 5.]]))
+            np.array([-np.pi, -5]).astype(np.float32),
+            np.array([np.pi, 5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
         print("Action space low:", self.action_space.low)
