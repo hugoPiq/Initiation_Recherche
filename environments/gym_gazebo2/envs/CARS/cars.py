@@ -63,7 +63,7 @@ class CARSEnv(gym.Env):
         # Target, where should the agent reach
         """ ENV GYM"""
         self.action_space = spaces.Box(
-            np.array([-np.pi, -5]).astype(np.float32),
+            np.array([-np.pi, 2]).astype(np.float32),
             np.array([np.pi, 5]).astype(np.float32))
         print("-----------------------------------------")
         print("Action space high:", self.action_space.high)
