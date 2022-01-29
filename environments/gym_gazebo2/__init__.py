@@ -41,3 +41,7 @@ register(
     id='MYROBOT-v0',
     entry_point='gym_gazebo2.envs.MYROBOT:MyRobot',
 )
+register(
+    id='CARS-v0',
+    entry_point='gym_gazebo2.envs.CARS:CARSEnv',
+)
