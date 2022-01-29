@@ -107,8 +107,8 @@ class CARSEnv(gym.Env):
         # Subscribe to the appropriate topics, taking into account the particular robot
         self._pub = self.node.create_publisher(
             Twist, '/cmd_vel')
-        # self._sub = self.node.create_subscription(
-        #     msg.TFMessage, '/tf', self.observation_callback)
+        self._sub = self.node.create_subscription(
+            msg.TFMessage, '/tf', self.observation_callback)
         # For reset purpose
         # self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
@@ -124,6 +124,7 @@ class CARSEnv(gym.Env):
         """
         # self._observation_msg = message.transforms[0].transform
         self._observation_msg = message
+        print(message)
 
     def set_episode_size(self, episode_size):
         self.max_episode_steps = episode_size
@@ -163,7 +164,6 @@ class CARSEnv(gym.Env):
             - done (status)
         """
         self.iterator += 1
-        print(self._observation_msg)
         # Execute "action"
         # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
