@@ -7,4 +7,4 @@ import gym_gazebo2
 import time
 env = gym.make('CARS-v0')
 while True:
-    observation, reward, done, info = env.step([0., 0.1])
+    observation, reward, done, info = env.step([0., 1])
