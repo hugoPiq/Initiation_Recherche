@@ -40,11 +40,11 @@ class CARSEnv(gym.Env):
         # Set the path of the corresponding URDF file
         # xacro my_robot.urdf.xacro > my_robot.urdf
         urdfPath = get_prefix_path(
-            "my_robot_description") + "/share/my_robot_description/urdf/my_robot.urdf"
+            "cars") + "/share/cars/urdf/cars.urdf"
 
         # Launch robot in a new Process
         self.launch_subp = ut_launch.startLaunchServiceProcess(
-            ut_launch.generateLaunchDescriptionROBOT(
+            ut_launch.generateLaunchDescriptionCARS(
                 self.gzclient, self.realSpeed, self.multiInstance, self.port, urdfPath))
 
         # Create the node after the new ROS_DOMAIN_ID is set in generate_launch_description()

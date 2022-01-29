@@ -244,6 +244,89 @@ def generateLaunchDescriptionROBOT(gzclient, realSpeed, multiInstance, port, urd
     return launchDesc
 
 
+def generateLaunchDescriptionCARS(gzclient, realSpeed, multiInstance, port, urdf):
+    """
+        Returns ROS2 LaunchDescription object.
+        Args:
+            realSpeed: bool   True if RTF must be set to 1, False if RTF must be set to maximum.
+    """
+    installDir = get_package_prefix('mara_gazebo_plugins')
+
+    if 'GAZEBO_MODEL_PATH' in os.environ:
+        os.environ['GAZEBO_MODEL_PATH'] = os.environ['GAZEBO_MODEL_PATH'] + ':' + installDir \
+            + '/share'
+    else:
+        os.environ['GAZEBO_MODEL_PATH'] = installDir + "/share"
+
+    if 'GAZEBO_PLUGIN_PATH' in os.environ:
+        os.environ['GAZEBO_PLUGIN_PATH'] = os.environ['GAZEBO_PLUGIN_PATH'] + ':' + installDir \
+            + '/lib'
+    else:
+        os.environ['GAZEBO_PLUGIN_PATH'] = installDir + '/lib'
+
+    if port != 11345:  # Default gazebo port
+        os.environ["ROS_DOMAIN_ID"] = str(port)
+        os.environ["GAZEBO_MASTER_URI"] = "http://localhost:" + str(port)
+        print("******* Manual network segmentation *******")
+        print("ROS_DOMAIN_ID=" + os.environ['ROS_DOMAIN_ID'])
+        print("GAZEBO_MASTER_URI=" + os.environ['GAZEBO_MASTER_URI'])
+        print("")
+    elif multiInstance:
+        # Exclusive network segmentation, which allows to launch multiple instances of ROS2+Gazebo
+        networkParams = getExclusiveNetworkParameters()
+        os.environ["ROS_DOMAIN_ID"] = networkParams.get('ros_domain_id')
+        os.environ["GAZEBO_MASTER_URI"] = networkParams.get(
+            'gazebo_master_uri')
+        print("******* Exclusive network segmentation *******")
+        print("ROS_DOMAIN_ID=" + networkParams.get('ros_domain_id'))
+        print("GAZEBO_MASTER_URI=" + networkParams.get('gazebo_master_uri'))
+        print("")
+
+    try:
+        envs = {}
+        for key in os.environ.__dict__["_data"]:
+            key = key.decode("utf-8")
+            if key.isupper():
+                envs[key] = os.environ[key]
+    except BaseException as exception:
+        print("Error with Envs: " + str(exception))
+        return None
+
+    # Gazebo visual interfaze. GUI/no GUI options.
+    if gzclient:
+        gazeboCmd = "gazebo"
+    else:
+        gazeboCmd = "gzserver"
+
+    # Creation of ROS2 LaunchDescription obj.
+
+    if realSpeed:
+        worldPath = os.path.join(os.path.dirname(gym_gazebo2.__file__), 'worlds',
+                                 'empty.world')
+    else:
+        worldPath = os.path.join(os.path.dirname(gym_gazebo2.__file__), 'worlds',
+                                 'empty_speed_up.world')
+
+    launchDesc = LaunchDescription([
+        ExecuteProcess(
+            cmd=[gazeboCmd, '-s', 'libgazebo_ros_factory.so', '-s',
+                 'libgazebo_ros_init.so', worldPath], output='screen', env=envs),
+        Node(
+            package='robot_state_publisher',
+            node_executable='robot_state_publisher',
+            output='screen',
+            arguments=[urdf]),
+        Node(package='cars_utils_scripts', node_executable='spawn_cars.py',
+             arguments=[urdf],
+             output='screen'),
+        Node(
+            package='joint_state_publisher',
+            node_executable='joint_state_publisher',
+            output='screen')
+    ])
+    return launchDesc
+
+
 def launchReal():
     #TODO: it is hard-coded
     os.environ["ROS_DOMAIN_ID"] = str(22)
