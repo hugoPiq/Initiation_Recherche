@@ -121,7 +121,6 @@ class MyRobot(gym.Env):
         """
         Callback method for the subscriber of JointTrajectoryControllerState
         """
-        print("ok")
         self._observation_msg = message.transforms[0].transform
 
     def set_episode_size(self, episode_size):

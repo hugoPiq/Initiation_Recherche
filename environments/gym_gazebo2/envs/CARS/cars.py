@@ -107,8 +107,8 @@ class CARSEnv(gym.Env):
         # Subscribe to the appropriate topics, taking into account the particular robot
         self._pub = self.node.create_publisher(
             Twist, '/cmd_vel')
-        self._sub = self.node.create_subscription(
-            msg.TFMessage, '/tf', self.observation_callback)
+        # self._sub = self.node.create_subscription(
+        #     msg.TFMessage, '/tf', self.observation_callback)
         # For reset purpose
         # self.reset_sim = self.node.create_client(Empty, '/reset_simulation')
 
