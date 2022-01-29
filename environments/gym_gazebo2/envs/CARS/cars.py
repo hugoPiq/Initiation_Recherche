@@ -1,3 +1,4 @@
+from email import message
 import re
 from geometry_msgs.msg import Pose
 # Used for publishing mara joint angles.
@@ -161,9 +162,8 @@ class CARSEnv(gym.Env):
             - reward
             - done (status)
         """
-        print(action)
         self.iterator += 1
-        # print("action:", action)
+        print(self._observation_msg)
         # Execute "action"
         # Control only x and yaw
         self._pub.publish(Twist(linear=Vector3(
