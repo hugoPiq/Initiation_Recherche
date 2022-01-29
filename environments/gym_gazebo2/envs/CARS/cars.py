@@ -161,6 +161,7 @@ class CARSEnv(gym.Env):
             - reward
             - done (status)
         """
+        print(action)
         self.iterator += 1
         # print("action:", action)
         # Execute "action"
