@@ -31,6 +31,7 @@ config = tf.ConfigProto(allow_soft_placement=True,
 
 config.gpu_options.allow_growth = True
 
+
 def get_alg_module(alg, submodule=None):
     submodule = submodule or alg
     try:
@@ -42,8 +43,10 @@ def get_alg_module(alg, submodule=None):
 
     return alg_module
 
+
 def get_learn_function(alg, submodule=None):
     return get_alg_module(alg, submodule).learn
+
 
 def get_learn_function_defaults(alg, env_type):
     try:
@@ -53,17 +56,21 @@ def get_learn_function_defaults(alg, env_type):
         kwargs = {}
     return kwargs
 
+
 def constfn(val):
     def f(_):
         return val
     return f
 
+
 def make_env():
     env = gym.make(env_name)
     env.set_episode_size(alg_kwargs['nsteps'])
-    env = bench.Monitor(env, logger.get_dir() and os.path.join(logger.get_dir()), allow_early_resets=True)
+    env = bench.Monitor(env, logger.get_dir() and os.path.join(
+        logger.get_dir()), allow_early_resets=True)
 
     return env
+
 
 # Get dictionary from baselines/ppo2/defaults
 alg_kwargs = get_learn_function_defaults('ppo2', 'mara_mlp')
@@ -71,7 +78,8 @@ env_name = alg_kwargs['env_name']
 alg_kwargs['total_timesteps'] = alg_kwargs['nsteps']
 
 # Generate tensorboard file
-format_strs = os.getenv('MARA_LOG_FORMAT', 'stdout,log,csv,tensorboard').split(',')
+format_strs = os.getenv(
+    'MARA_LOG_FORMAT', 'stdout,log,csv,tensorboard').split(',')
 logger.configure(os.path.abspath('/tmp/ppo2_mlp'), format_strs)
 
 env = DummyVecEnv([make_env])
@@ -108,7 +116,8 @@ if isinstance(alg_kwargs['cliprange'], float):
 else:
     assert callable(alg_kwargs['cliprange'])
 
-nn ={ 'num_layers': alg_kwargs['num_layers'], 'num_hidden': alg_kwargs['num_hidden'] }
+nn = {'num_layers': alg_kwargs['num_layers'],
+      'num_hidden': alg_kwargs['num_hidden']}
 policy = build_policy(env, alg_kwargs['network'], **nn)
 nenvs = env.num_envs
 ob_space = env.observation_space
@@ -118,11 +127,11 @@ nbatch_train = nbatch // alg_kwargs['nminibatches']
 
 with tf.Session(config=config) as run_sess:
 
-    make_model = lambda : ppo.Model(policy=policy, ob_space=ob_space,
-                                    ac_space=ac_space, nbatch_act=nenvs,
-                                    nbatch_train=nbatch_train,
-                                    nsteps=alg_kwargs['nsteps'], ent_coef=alg_kwargs['ent_coef'], vf_coef=alg_kwargs['vf_coef'],
-                                    max_grad_norm=alg_kwargs['max_grad_norm'])
+    def make_model(): return ppo.Model(policy=policy, ob_space=ob_space,
+                                       ac_space=ac_space, nbatch_act=nenvs,
+                                       nbatch_train=nbatch_train,
+                                       nsteps=alg_kwargs['nsteps'], ent_coef=alg_kwargs['ent_coef'], vf_coef=alg_kwargs['vf_coef'],
+                                       max_grad_norm=alg_kwargs['max_grad_norm'])
 
 model = make_model()
 model.load(savedir)
@@ -134,7 +143,7 @@ assert env.dummy().gg2().obs_dim == len(obs[0])
 actions = model.step_deterministic(obs)[0]
 assert len(actions[0]) == 6
 
-obs, rew, done, _  = env.step_runtime(actions)
+obs, rew, done, _ = env.step_runtime(actions)
 assert (obs, rew, done) is not None
 
 env.dummy().gg2().close()
