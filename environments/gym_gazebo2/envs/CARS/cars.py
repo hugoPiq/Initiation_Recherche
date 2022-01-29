@@ -40,7 +40,7 @@ class CARSEnv(gym.Env):
         # Set the path of the corresponding URDF file
         # xacro my_robot.urdf.xacro > my_robot.urdf
         urdfPath = get_prefix_path(
-            "cars") + "/share/cars/urdf/cars.urdf"
+            "cars_description") + "/share/cars/urdf/cars.urdf"
 
         # Launch robot in a new Process
         self.launch_subp = ut_launch.startLaunchServiceProcess(
