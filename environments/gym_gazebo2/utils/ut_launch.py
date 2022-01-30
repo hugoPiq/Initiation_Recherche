@@ -302,7 +302,7 @@ def generateLaunchDescriptionCARS(gzclient, realSpeed, multiInstance, port, urdf
 
     if realSpeed:
         worldPath = os.path.join(os.path.dirname(gym_gazebo2.__file__), 'worlds',
-                                 'empty.world')
+                                 'track.world')
     else:
         worldPath = os.path.join(os.path.dirname(gym_gazebo2.__file__), 'worlds',
                                  'empty_speed_up.world')
